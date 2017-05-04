@@ -8,9 +8,6 @@
     "jester/q3tool": "^0.2.1"
   },
   "autoload": {
-    "classmap": [
-      "database"
-    ],
     "psr-4": {
       "Stormyy\\B3\\": "src/"
     }
