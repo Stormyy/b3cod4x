@@ -12,7 +12,7 @@
       "database"
     ],
     "psr-4": {
-      "Luv\\B3\\": "src/"
+      "Stormyy\\B3\\": "src/"
     }
   }
 }
