@@ -89,7 +89,6 @@ class B3Controller extends Controller
                 $screenshotdata = base64_decode(strtr($data, '-_#', '+/='), true);
                 if ($screenshotdata != FALSE) {
                     $metadata = substr($screenshotdata, strpos($screenshotdata, "CoD4X"));
-                    \Log::critical((explode("\0", $metadata)));
 
                     list($crap, $hostname, $map, $playername, $guid, $shotnum, $time) = explode("\0", $metadata);
                     $filename = $serverport . $guid . time() . ".jpg";
