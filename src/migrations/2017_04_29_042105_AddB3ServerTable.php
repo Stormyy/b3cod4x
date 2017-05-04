@@ -17,6 +17,8 @@ class AddB3ServerTable extends Migration
            $table->increments('id');
            $table->string('rcon');
            $table->string('identifier');
+           $table->string('host');
+           $table->integer('port');
            $table->json('dbSettings');
            $table->timestamps();
         });

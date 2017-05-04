@@ -29,11 +29,13 @@ class B3Controller extends Controller
 
     }
 
-    public function getList(){
+    public function getList()
+    {
         return view('b3::server.list')->with(['servers' => B3Server::get()]);
     }
 
-    public function getPlayer($id, $guid){
+    public function getPlayer($id, $guid)
+    {
         /** @var Server $server */
         $server = B3Server::findOrFail($id);
         $player = (new B3Database($server))->getUser($guid);
@@ -48,12 +50,13 @@ class B3Controller extends Controller
         return view('b3::player.list')->with($data);
     }
 
-    public function getCurrentPlayers($id){
-         /** @var Server $server */
+    public function getCurrentPlayers($id)
+    {
+        /** @var Server $server */
         $server = B3Server::findOrFail($id);
         $b3users = (new B3Database($server))->getCurrentClients();
         $b3CurrentUserList = [];
-        foreach($b3users as $b3user){
+        foreach ($b3users as $b3user) {
 
             $b3user->screenshots = $server->screenshots()->where('guid', $b3user->GUID)->orderBy('created_at', 'desc')->get();;
             $b3user->IP = PermissionHelper::ip($b3user->IP);
@@ -68,46 +71,41 @@ class B3Controller extends Controller
     {
 
         $identkey = \Input::get('identkey');
-        if ($identkey != "HROwEQMvZAtJJ2APaJ1M") {
-            \Log::error($request->getContent());
-            throw new AuthenticationException();
-        }
-
+        $server = B3Server::where('identifier', $identkey)->first();
+        $serverport = \Input::get('serverport');
         if (\Input::get('command') == "HELO") {
+            $server->host = $request->ip();
+            $server->port = $serverport;
+            $server->rcon = \Input::get('rcon');
+            $server->save();
             return "status=okay";
         }
 
         if (\Input::get('command') == "submitshot") {
-            $serverport = \Input::get('serverport');
             $data = \Input::get('data');
             if (!($serverport || $data)) {
                 return "status=\"Error: Empty serverport or data value\"";
             } else {
                 $screenshotdata = base64_decode(strtr($data, '-_#', '+/='), true);
                 if ($screenshotdata != FALSE) {
-                    $server = Server::wherePort($serverport)->first();
-                    if ($server != null) {
-                        $metadata = substr($screenshotdata, strpos($screenshotdata, "CoD4X"));
-                        \Log::critical((explode("\0", $metadata)));
+                    $metadata = substr($screenshotdata, strpos($screenshotdata, "CoD4X"));
+                    \Log::critical((explode("\0", $metadata)));
 
-                        list($crap, $hostname, $map, $playername, $guid, $shotnum, $time) = explode("\0", $metadata);
-                        $filename = $serverport . $guid . time() . ".jpg";
-                        Storage::disk('screenshots')->put($filename, $screenshotdata);
+                    list($crap, $hostname, $map, $playername, $guid, $shotnum, $time) = explode("\0", $metadata);
+                    $filename = $serverport . $guid . time() . ".jpg";
+                    Storage::disk('screenshots')->put($filename, $screenshotdata);
 
-                        $screenshot = new Screenshot();
-                        $screenshot->filename = $filename;
-                        $screenshot->guid = $guid;
-                        $screenshot->name = $playername;
-                        $screenshot->server()->associate($server->b3server);
-                        //$screenshot->created_at = new Carbon($time);
-                        $screenshot->save();
+                    $screenshot = new Screenshot();
+                    $screenshot->filename = $filename;
+                    $screenshot->guid = $guid;
+                    $screenshot->name = $playername;
+                    $screenshot->server()->associate($server);
+                    //$screenshot->created_at = new Carbon($time);
+                    $screenshot->save();
 
-                        event(new ScreenshotTaken($screenshot));
+                    event(new ScreenshotTaken($screenshot));
 
-                        return 'status=success';
-                    } else {
-                        return 'status=failure';
-                    }
+                    return 'status=success';
                 } else {
                     return 'status=failure';
                 }
@@ -116,20 +114,21 @@ class B3Controller extends Controller
 
     }
 
-    public function getSearch($id, $query=""){
+    public function getSearch($id, $query = "")
+    {
         $server = B3Server::findOrFail($id);
         return (new B3Database($server))->search($query);
     }
 
-    public function postScreenshotAPI($id){
+    public function postScreenshotAPI($id)
+    {
         $server = B3Server::findOrFail($id);
         $guid = \Input::get('guid');
 
-        $tool = new q3tool("luvclan.nl", $server->port, $server->rcon);
-        $response = $tool->send_rcon('getss '.$guid);
+        $tool = new q3tool($server->host, $server->port, $server->rcon);
+        $response = $tool->send_rcon('getss ' . $guid);
         return $response;
     }
-
 
 
 }
