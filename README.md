@@ -26,7 +26,7 @@ The library uses the base template from laravel located in resources/views/layou
         broadcaster: 'pusher',
         key: '',
         cluster: 'eu',
-        encrypted: ,
+        encrypted: true,
         namespace: 'Stormyy\\B3\\Events'
     }
 </script>
