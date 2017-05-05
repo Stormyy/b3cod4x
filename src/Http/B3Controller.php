@@ -129,5 +129,51 @@ class B3Controller extends Controller
         return $response;
     }
 
+    public function getAdd(){
+
+        return $this->getEdit();
+    }
+
+    public function getEdit($id=0){
+        $server = B3Server::findOrNew($id);
+        $server->identifier = str_random(32);
+        if($id == 0){
+            $server->id = 0;
+            $server->dbSettings = [
+                'host' => '127.0.0.1',
+                'port' => '3306',
+                'database' => 'b3',
+                'username' => 'b3',
+                'password' => 'password'
+            ];
+        }
+
+        return view('b3::server.form', ['server' => $server]);
+    }
+
+    public function postSave($id=0){
+        $server = B3Server::findOrNew($id);
+        $server->name = \Input::get('name');
+        $server->identifier = \Input::get('identifier');
+
+        $db = \Input::get('db');
+        $server->dbSettings = [
+            'host' => $db['host'],
+            'port' => $db['port'],
+            'database' => $db['database'],
+            'username' => $db['username'],
+            'password' => $db['password'],
+            'driver' => 'mysql',
+            'engine' => null,
+            'prefix' => "",
+            "strict" => true,
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci'
+        ];
+        $server->save();
+
+        return redirect('/b3');
+    }
+
 
 }

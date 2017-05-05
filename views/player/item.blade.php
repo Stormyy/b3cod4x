@@ -77,7 +77,7 @@
                                 <tr>
                                     <td>{{$alias->alias}}</td>
                                     <td>{{$alias->num_used}}</td>
-                                    <td>{{$alias->time_edit}}</td>
+                                    <td>{{\Carbon\Carbon::createFromTimestampUTC($alias->time_edit)->toDayDateTimeString()}}</td>
                                 </tr>
                             @endforeach
                             </tbody>
