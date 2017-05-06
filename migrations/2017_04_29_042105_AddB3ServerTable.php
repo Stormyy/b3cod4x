@@ -16,10 +16,10 @@ class AddB3ServerTable extends Migration
         \Schema::create('b3servers', function (Blueprint $table){
            $table->increments('id');
            $table->string('name');
-           $table->string('rcon');
+           $table->string('rcon')->nullable();
            $table->string('identifier');
-           $table->string('host');
-           $table->integer('port');
+           $table->string('host')->nullable();
+           $table->integer('port')->nullable();
            $table->json('dbSettings');
            $table->timestamps();
         });

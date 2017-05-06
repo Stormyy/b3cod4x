@@ -21,6 +21,7 @@ use Stormyy\B3\Models\B3Server;
 use Stormyy\B3\Models\Screenshot;
 use q3tool;
 use Storage;
+use Illuminate\Support\Facades\Input;
 
 class B3Controller extends Controller
 {
@@ -70,19 +71,19 @@ class B3Controller extends Controller
     public function postScreenshot(Request $request)
     {
 
-        $identkey = \Input::get('identkey');
+        $identkey = Input::get('identkey');
         $server = B3Server::where('identifier', $identkey)->first();
-        $serverport = \Input::get('serverport');
-        if (\Input::get('command') == "HELO") {
+        $serverport = Input::get('serverport');
+        if (Input::get('command') == "HELO") {
             $server->host = $request->ip();
             $server->port = $serverport;
-            $server->rcon = \Input::get('rcon');
+            $server->rcon = Input::get('rcon');
             $server->save();
             return "status=okay";
         }
 
-        if (\Input::get('command') == "submitshot") {
-            $data = \Input::get('data');
+        if (Input::get('command') == "submitshot") {
+            $data = Input::get('data');
             if (!($serverport || $data)) {
                 return "status=\"Error: Empty serverport or data value\"";
             } else {
@@ -122,7 +123,7 @@ class B3Controller extends Controller
     public function postScreenshotAPI($id)
     {
         $server = B3Server::findOrFail($id);
-        $guid = \Input::get('guid');
+        $guid = Input::get('guid');
 
         $tool = new q3tool($server->host, $server->port, $server->rcon);
         $response = $tool->send_rcon('getss ' . $guid);
@@ -153,10 +154,10 @@ class B3Controller extends Controller
 
     public function postSave($id=0){
         $server = B3Server::findOrNew($id);
-        $server->name = \Input::get('name');
-        $server->identifier = \Input::get('identifier');
+        $server->name = Input::get('name');
+        $server->identifier = Input::get('identifier');
 
-        $db = \Input::get('db');
+        $db = Input::get('db');
         $server->dbSettings = [
             'host' => $db['host'],
             'port' => $db['port'],
