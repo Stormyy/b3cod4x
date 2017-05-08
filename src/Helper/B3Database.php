@@ -46,8 +46,8 @@ class B3Database
         $otherPlayers = Player::whereNotIn ('id', $ids)->where('name', 'like', '%'.$query.'%')->orWhere('guid', 'like', '%'.$query.'%')->orWhere('ip', 'like', '%'.$query.'%')->orderBy('connections', 'desc')->orderBy('time_edit', 'desc')->orderBy('time_edit', 'desc')->limit(10-count($players))->get();
         foreach($otherPlayers as $player){
             $player = $this->parsePlayer($player);
-            if(!in_array($player, $players)){
-                $players[] =$player;
+            if(!isset($players[$player->id])){
+                $players[$player->id] =$player;
                 $ids[] = $player->id;
             }
         }
@@ -58,8 +58,8 @@ class B3Database
             $aliases = Alias::where('alias', 'like', '%'.$query.'%')->orderBy('num_used', 'desc')->limit(10-count($players))->with('player')->get();
             foreach($aliases as $alias){
                 $player = $this->parsePlayer($alias->player);
-                if(!in_array($player, $players)){
-                    $players[] = $player;
+                if(!isset($players[$player->id])){
+                    $players[$player->id] = $player;
                     $ids[] = $player->id;
                 }
             }
@@ -69,8 +69,8 @@ class B3Database
             $ipaliases = IpAlias::where('ip', 'like', '%'.$query.'%')->orderBy('num_used', 'desc')->limit(10-count($players))->with('player')->get();
             foreach($ipaliases as $otherip){
                 $player = $this->parsePlayer($otherip->player);
-                if(!in_array($player, $players)){
-                    $players[] = $player;
+                if(!isset($players[$player->id])){
+                    $players[$player->id] = $player;
                     $ids[] = $player->id;
                 }
             }
