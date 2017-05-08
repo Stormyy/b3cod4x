@@ -60,7 +60,7 @@ class B3Controller extends Controller
         foreach ($b3users as $b3user) {
 
             $b3user->screenshots = $server->screenshots()->where('guid', $b3user->GUID)->orderBy('created_at', 'desc')->get();;
-            $b3user->IP = PermissionHelper::ip($b3user->IP);
+            $b3user->IP = PermissionHelper::ipToFlag($b3user->IP)." ".PermissionHelper::ip($b3user->IP);
             $b3user->AllowScreenshot = \Auth::check();
             $b3CurrentUserList[] = $b3user;
         }
@@ -98,7 +98,7 @@ class B3Controller extends Controller
                     $screenshot = new Screenshot();
                     $screenshot->filename = $filename;
                     $screenshot->guid = $guid;
-                    $screenshot->name = $playername;
+                    $screenshot->name = utf8_encode($playername);
                     $screenshot->server()->associate($server);
                     //$screenshot->created_at = new Carbon($time);
                     $screenshot->save();

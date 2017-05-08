@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    <link rel="stylesheet" href="{{asset('vendor/stormyy/b3cod4x/css/b3app.css')}}" />
     <div id="b3app" v-pre="">
         <vue-toastr ref="toastr"></vue-toastr>
         <div class="container" style="padding-top:50px;">

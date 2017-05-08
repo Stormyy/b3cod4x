@@ -32,6 +32,12 @@ class B3Database
         return Player::where('guid', $guid)->first();
     }
 
+    private function parsePlayer($player){
+        $player->ip = PermissionHelper::ipToFlag($player->ip)." ".PermissionHelper::ip($player->ip);
+        $player->lastseen = Carbon::createFromTimestampUTC($player->time_edit)->toDayDateTimeString();
+        return $player;
+    }
+
     public function search($query)
     {
         $ids = [];
@@ -39,8 +45,7 @@ class B3Database
 
         $otherPlayers = Player::whereNotIn ('id', $ids)->where('name', 'like', '%'.$query.'%')->orWhere('guid', 'like', '%'.$query.'%')->orWhere('ip', 'like', '%'.$query.'%')->orderBy('connections', 'desc')->orderBy('time_edit', 'desc')->orderBy('time_edit', 'desc')->limit(10-count($players))->get();
         foreach($otherPlayers as $player){
-            $player->ip = PermissionHelper::ip($player->ip);
-            $player->lastseen = Carbon::createFromTimestampUTC($player->time_edit)->toDayDateTimeString();
+            $player = $this->parsePlayer($player);
             if(!in_array($player, $players)){
                 $players[] =$player;
                 $ids[] = $player->id;
@@ -52,9 +57,7 @@ class B3Database
         if(count($players) < 10){
             $aliases = Alias::where('alias', 'like', '%'.$query.'%')->orderBy('num_used', 'desc')->limit(10-count($players))->with('player')->get();
             foreach($aliases as $alias){
-                $player = $alias->player;
-                $player->ip = PermissionHelper::ip($player->ip);
-                $player->lastseen = Carbon::createFromTimestampUTC($player->time_edit)->toDayDateTimeString();
+                $player = $this->parsePlayer($alias->player);
                 if(!in_array($player, $players)){
                     $players[] = $player;
                     $ids[] = $player->id;
@@ -65,9 +68,7 @@ class B3Database
         if(count($players) < 10){
             $ipaliases = IpAlias::where('ip', 'like', '%'.$query.'%')->orderBy('num_used', 'desc')->limit(10-count($players))->with('player')->get();
             foreach($ipaliases as $otherip){
-                $player = $otherip->player;
-                $player->ip = PermissionHelper::ip($player->ip);
-                $player->lastseen = Carbon::createFromTimestampUTC($player->time_edit)->toDayDateTimeString();
+                $player = $this->parsePlayer($otherip->player);
                 if(!in_array($player, $players)){
                     $players[] = $player;
                     $ids[] = $player->id;

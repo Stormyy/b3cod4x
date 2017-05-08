@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    <link rel="stylesheet" href="{{asset('vendor/stormyy/b3cod4x/css/b3app.css')}}" />
     <div class="container" style="padding-top:50px;">
         <div class="row">
             <div class="col-sm-12">
@@ -25,7 +26,7 @@
                                 <td class="heading">Guid</td>
                                 <td>{{$player->guid}}</td>
                                 <td class="heading">Ip</td>
-                                <td>{{\Stormyy\B3\Helper\PermissionHelper::ip($player->ip)}}</td>
+                                <td>{!! \Stormyy\B3\Helper\PermissionHelper::ipToFlag($player->ip) !!} {{\Stormyy\B3\Helper\PermissionHelper::ip($player->ip)}}</td>
                             </tr>
                             <tr>
                                 <td class="heading">First seen</td>

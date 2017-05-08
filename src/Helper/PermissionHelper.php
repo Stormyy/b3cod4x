@@ -8,6 +8,8 @@
 
 namespace Stormyy\B3\Helper;
 
+use GeoIP;
+
 abstract class PermissionHelper
 {
     public static function ip($ip){
@@ -16,6 +18,11 @@ abstract class PermissionHelper
         } else {
             return $ip;
         }
+    }
+
+    public static function ipToFlag($ip){
+        $countryinfo = GeoIp::getLocation($ip);
+        return "<span class='flag-icon flag-icon-".strtolower($countryinfo['isoCode'])."' title='".$countryinfo['country']."'></span>";
     }
 
 }
