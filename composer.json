@@ -5,7 +5,8 @@
   "license": "MIT",
   "type": "project",
   "require": {
-    "jester/q3tool": "^0.2.1"
+    "jester/q3tool": "^0.2.1",
+    "torann/geoip": "0.2.*@dev"
   },
   "autoload": {
     "psr-4": {
