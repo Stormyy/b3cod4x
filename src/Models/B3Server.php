@@ -15,9 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 class B3Server extends Model
 {
     protected $table = 'b3servers';
-    protected $casts = [
-        'dbSettings' => 'array',
-    ];
+    protected $casts = [];
 
     public function server(){
         return $this->belongsTo(Server::class);

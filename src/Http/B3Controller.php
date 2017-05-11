@@ -77,7 +77,7 @@ class B3Controller extends Controller
         if (Input::get('command') == "HELO") {
             $server->host = $request->ip();
             $server->port = $serverport;
-            $server->rcon = Input::get('rcon');
+            $server->rcon = \Crypt::encrypt(Input::get('rcon'));
             $server->save();
             return "status=okay";
         }
@@ -124,7 +124,7 @@ class B3Controller extends Controller
     {
         $guid = Input::get('guid');
 
-        $tool = new q3tool($server->host, $server->port, $server->rcon);
+        $tool = new q3tool($server->host, $server->port, \Crypt::decrypt($server->rcon));
         $response = $tool->send_rcon('getss ' . $guid);
         return $response;
     }
@@ -148,6 +148,8 @@ class B3Controller extends Controller
             ];
         }
 
+        $server->dbSettings = json_decode(\Crypt::decrypt($server->dbSettings), true);
+
         return view('b3::server.form', ['server' => $server]);
     }
 
@@ -157,7 +159,7 @@ class B3Controller extends Controller
         $server->identifier = Input::get('identifier');
 
         $db = Input::get('db');
-        $server->dbSettings = [
+        $server->dbSettings = \Crypt::encrypt(json_encode([
             'host' => $db['host'],
             'port' => $db['port'],
             'database' => $db['database'],
@@ -169,7 +171,7 @@ class B3Controller extends Controller
             "strict" => true,
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci'
-        ];
+        ]));
         $server->save();
 
         return redirect('/b3');

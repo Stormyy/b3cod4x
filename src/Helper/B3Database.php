@@ -20,7 +20,7 @@ class B3Database
 {
     public function __construct(B3Server $server)
     {
-        \Config::set('database.connections.b3', $server->dbSettings);
+        \Config::set('database.connections.b3', json_decode(\Crypt::decrypt(($server->dbSettings)), true));
     }
 
     public function getCurrentClients(){
