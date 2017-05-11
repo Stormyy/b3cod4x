@@ -6,7 +6,7 @@
   "type": "project",
   "require": {
     "jester/q3tool": "^0.2.1",
-    "torann/geoip": "0.2.*@dev"
+    "torann/geoip": "^1.0",
   },
   "autoload": {
     "psr-4": {
