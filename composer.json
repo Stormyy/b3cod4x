@@ -7,6 +7,9 @@
   "require": {
     "jester/q3tool": "^0.2.1",
     "torann/geoip": "^1.0",
+    "php": ">=7.0",
+    "illuminate/support": "~5.4",
+    "illuminate/console": "~5.4"
   },
   "autoload": {
     "psr-4": {
