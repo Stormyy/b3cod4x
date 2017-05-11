@@ -35,6 +35,6 @@ The library uses the base template from laravel located in resources/views/layou
 
 If you want to make use of notifcation/broadcast system see https://laravel.com/docs/5.4/broadcasting and add the pusher information above
 
-## Permission
+## Permissions
 
 By default b3cod4x supports authorization with laravel policies. This policy allows all actions when your logged in. You can overwrite this policy class in the b3cod4x config. Your own b3cod4x policy class has to implement the ```Stormyy\B3\Policies\B3ServerPolicyInterface``` interface
