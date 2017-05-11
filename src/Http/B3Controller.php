@@ -120,9 +120,8 @@ class B3Controller extends Controller
         return (new B3Database($server))->search($query);
     }
 
-    public function postScreenshotAPI($id)
+    public function postScreenshotAPI(B3Server $server)
     {
-        $server = B3Server::findOrFail($id);
         $guid = Input::get('guid');
 
         $tool = new q3tool($server->host, $server->port, $server->rcon);

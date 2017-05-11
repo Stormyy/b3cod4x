@@ -10,6 +10,8 @@ namespace Stormyy\B3;
 
 
 use Illuminate\Support\ServiceProvider;
+use Stormyy\B3\Models\B3Server;
+use Stormyy\B3\Policies\B3ServerPolicy;
 
 class B3AddonServiceProvider extends ServiceProvider
 {
@@ -27,6 +29,13 @@ class B3AddonServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../assets' => public_path('vendor/stormyy/b3cod4x'),
         ], 'public');
+
+        $this->publishes([
+            __DIR__.'/../config/b3cod4x.php' => config_path('b3cod4x.php'),
+            __DIR__.'/../config/geoip.php' => config_path('geoip.php'),
+        ]);
+
+        \Gate::policy(B3Server::class, \Config::get('b3cod4x.policy'));
     }
 
     public function register()

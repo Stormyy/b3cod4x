@@ -22,7 +22,7 @@ abstract class PermissionHelper
 
     public static function ipToFlag($ip){
         $countryinfo = GeoIp::getLocation($ip);
-        return "<span class='flag-icon flag-icon-".strtolower($countryinfo['isoCode'])."' title='".$countryinfo['country']."'></span>";
+        return "<span class='flag-icon flag-icon-".strtolower($countryinfo['iso_code'])."' title='".$countryinfo['country']."'></span>";
     }
 
 }

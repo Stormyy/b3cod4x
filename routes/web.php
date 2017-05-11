@@ -1,4 +1,7 @@
 <?php
+use Stormyy\B3\Models\B3Server;
+
+Route::model('b3server', B3Server::class);
 Route::group(['namespace' => 'Stormyy\B3\Http'], function(){
     Route::group(['middleware' => ['web']], function(){
         Route::get('/b3', 'B3Controller@getList');
@@ -16,8 +19,8 @@ Route::group(['namespace' => 'Stormyy\B3\Http'], function(){
     Route::post('/b3/screenshot', 'B3Controller@postScreenshot');
     Route::group(['middleware' => 'api'], function() {
 
-        Route::group(['middleware' => 'auth:api'], function() {
-            Route::post('/b3/{serverid}/screenshot/api', 'B3Controller@postScreenshotAPI');
+        Route::group(['middleware' => ['auth:api', 'can:screenshot,b3server']], function() {
+            Route::post('/b3/{b3server}/screenshot/api', 'B3Controller@postScreenshotAPI');
         });
 
     });
