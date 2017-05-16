@@ -3,24 +3,30 @@ B3 management system build on laravel with support for cod4x screenshots. Based 
 
 Install library in a laravel installation via composer
 
-```composer require Stormyy/b3cod4x```
+```bash
+composer require Stormyy/b3cod4x
+```
 
-Add the service provider in the app.php
+Add the service provider in the `app.php`
 
-```Stormyy\B3\B3AddonServiceProvider::class```
+`Stormyy\B3\B3AddonServiceProvider::class`
 
 After that deploy assets by executing
 
-```php artisan vendor:publish --provider="Stormyy\B3\B3AddonServiceProvider" --force```
+```bash
+php artisan vendor:publish --provider="Stormyy\B3\B3AddonServiceProvider" --force
+```
 
 Excecute migrations with 
 
-```php artisan migrate```
-
-
-The library uses the base template from laravel located in resources/views/layouts/app.php on the bottom of this layout (inside body) add the following: 
-
+```bash
+php artisan migrate
 ```
+
+
+The library uses the base template from laravel located in `resources/views/layouts/app.php` on the bottom of this layout (inside body) add the following: 
+
+```html
 <script type="text/javascript">
     window.pusherinfo = {
         broadcaster: 'pusher',
@@ -37,4 +43,4 @@ If you want to make use of notifcation/broadcast system see https://laravel.com/
 
 ## Permissions
 
-By default b3cod4x supports authorization with laravel policies. This policy allows all actions when your logged in. You can overwrite this policy class in the b3cod4x config. Your own b3cod4x policy class has to implement the ```Stormyy\B3\Policies\B3ServerPolicyInterface``` interface
+By default b3cod4x supports authorization with laravel policies. This policy allows all actions when your logged in. You can overwrite this policy class in the b3cod4x config. Your own b3cod4x policy class has to implement the `Stormyy\B3\Policies\B3ServerPolicyInterface` interface
