@@ -11,7 +11,9 @@ return [
     |
     */
 
-    'policy' => \Stormyy\B3\Policies\B3ServerPolicy::class
+    'policy' => \Stormyy\B3\Policies\B3ServerPolicy::class,
+    'usertable' => 'users',
+    'usermodel' => \App\User::class
 
 
 
