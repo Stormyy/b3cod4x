@@ -20,7 +20,7 @@ class AddB3ServerTable extends Migration
            $table->string('identifier');
            $table->string('host')->nullable();
            $table->integer('port')->nullable();
-           $table->json('dbSettings');
+           $table->text('dbSettings');
            $table->timestamps();
         });
     }
