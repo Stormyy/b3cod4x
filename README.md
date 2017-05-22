@@ -43,4 +43,4 @@ If you want to make use of notifcation/broadcast system see https://laravel.com/
 
 ## Permissions
 
-By default b3cod4x supports authorization with laravel policies. This policy allows all actions when your logged in. You can overwrite this policy class in the b3cod4x config. Your own b3cod4x policy class has to implement the `Stormyy\B3\Policies\B3ServerPolicyInterface` interface
+By default b3cod4x supports authorization with laravel policies. For the default policy you need to claim your ingame player. This is done via a cod4x plugin which you can find in the latest release. You can overwrite this policy class in the b3cod4x config, you can also overwrite the default policy class by binding b3 groups to permissions in the config. Your own b3cod4x policy class has to extend the `Stormyy\B3\Policies\B3ServerPolicy` 
