@@ -21,10 +21,9 @@ use Stormyy\B3\Models\Penalty;
 
 class B3PlayerController extends Controller
 {
-    public function get($id, $guid)
+    public function get(B3Server $server, $guid)
     {
         /** @var B3Server $server */
-        $server = B3Server::findOrFail($id);
         $b3database= (new B3Database($server));
         $player = $b3database->getUser($guid);
         \View::share('myplayer', $b3database->getMyPlayer());
