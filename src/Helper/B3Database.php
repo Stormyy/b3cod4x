@@ -18,8 +18,11 @@ use Stormyy\B3\Models\Player;
 
 class B3Database
 {
+    private $b3server;
+
     public function __construct(B3Server $server)
     {
+        $this->b3server = $server;
         \Config::set('database.connections.b3', json_decode(\Crypt::decrypt(($server->dbSettings)), true));
     }
 
@@ -79,6 +82,39 @@ class B3Database
         return $players;
 
 
+    }
+
+    public function getMyPlayer(){
+        $user = \Auth::user();
+        if($user != null && $user->guid != null){
+            return Player::where('guid', $user->guid)->first();
+        }
+        return null;
+    }
+
+    public function getAllProfiles($guid){
+        $b3servers = B3Server::get();
+        $servers = [];
+        foreach($b3servers as $b3server){
+            \Config::set('database.connections.b3-'.$b3server->id, json_decode(\Crypt::decrypt(($b3server->dbSettings)), true));
+            $player = new Player();
+            $player = $player->setConnection('b3-'.$b3server->id)->where('guid', $guid)->with('group')->first();
+
+
+
+            if($player != null && $player->exists){
+                $servers[$b3server->id]['name'] = $b3server->name;
+                $isBanned = $player->penalties()->where('inactive', 0)->whereIn('type', ['Ban', 'TempBan'])->where(function($query){
+                    $query->where('time_expire', '-1');
+                    $query->orWhere('time_expire', '>', Carbon::now()->getTimestamp());
+                })->count();
+
+                $player->isBanned = $isBanned;
+                $servers[$b3server->id]['player'] = $player;
+            }
+        }
+
+        return $servers;
     }
 
 }

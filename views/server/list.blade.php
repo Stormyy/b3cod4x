@@ -1,7 +1,7 @@
-@extends('layouts.app')
+@extends('b3::base')
 
-@section('content')
-    <div class="container" style="padding-top:50px;">
+@section('b3content')
+    <div class="container">
         <div class="row">
             <div class="col-sm-12">
                 <div class="panel panel-primary">
