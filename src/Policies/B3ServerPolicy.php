@@ -15,6 +15,8 @@ use Stormyy\B3\Models\Player;
  */
 class B3ServerPolicy implements B3ServerPolicyInterface
 {
+    protected $myplayer;
+
     public function before($user, $ability)
     {
         return null;
