@@ -20,7 +20,7 @@ Route::group(['namespace' => 'Stormyy\B3\Http'], function () {
             Route::get('/b3/profile', 'B3PlayerController@getProfile');
         });
     });
-    Route::post('/b3/screenshot', 'B3Controller@postScreenshot');
+    Route::post('/b3/screenshot', 'B3ServerController@postScreenshot');
     Route::group(['middleware' => ['api', 'auth:api']], function () {
         Route::group(['middleware' => ['auth:api', 'can:screenshot,b3server']], function () {
             Route::post('/b3/{b3server}/screenshot/api', 'B3ServerController@postScreenshotAPI');
