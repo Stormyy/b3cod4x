@@ -59,7 +59,8 @@
                         <code>
                             set nehoscreenshot_identkey {{$server->identifier}}<br><br>
                             set nehoscreenshot_url "http://beta.luvclan.nl/b3/screenshot"<br><Br>
-                            loadplugin nehoscreenshotuploader
+                            loadplugin nehoscreenshotuploader<br><br>
+                            loadplugin claimplayer
                         </code>
                     </div>
                 </div>
