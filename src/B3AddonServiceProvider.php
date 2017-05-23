@@ -12,6 +12,7 @@ namespace Stormyy\B3;
 use Illuminate\Support\ServiceProvider;
 use Stormyy\B3\Models\B3Server;
 use Stormyy\B3\Policies\B3ServerPolicy;
+use Torann\GeoIP\GeoIPServiceProvider;
 
 class B3AddonServiceProvider extends ServiceProvider
 {
@@ -40,6 +41,6 @@ class B3AddonServiceProvider extends ServiceProvider
 
     public function register()
     {
-
+        $this->app->register(GeoIPServiceProvider::class);
     }
 }
