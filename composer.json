@@ -9,7 +9,8 @@
     "torann/geoip": "^1.0",
     "php": ">=7.0",
     "illuminate/support": "~5.4",
-    "illuminate/console": "~5.4"
+    "illuminate/console": "~5.4",
+    "doctrine/dbal": "^2.5"
   },
   "autoload": {
     "psr-4": {
