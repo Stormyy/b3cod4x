@@ -38,12 +38,12 @@
                         <div class="row">
                             @can('setrank', [$server, $player])
                                 <div class="col-sm-4">
-                                    <b3setrank :player="{{$player}}" serverid="{{$server->id}}"></b3setrank>
+                                    <b3setrank :player="{{$player}}"  serverid="{{$server->id}}"></b3setrank>
                                 </div>
                             @endcan
                             <div class="col-sm-1 pull-right">
                                 @can('ban', [$server, $player])
-                                    <b3ban :player="{{$player}}" serverid="{{$server->id}}"></b3ban>
+                                    <b3ban :player="{{$player}}"  serverid="{{$server->id}}"></b3ban>
                                 @endcan
                             </div>
                         </div>

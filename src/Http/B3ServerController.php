@@ -40,7 +40,11 @@ class B3ServerController extends Controller
         /** @var Server $server */
         $b3database = (new B3Database($server));
         $admins = Player::where('group_bits', '>=', '8')->orderBy('group_bits', 'desc')->orderBy('id', 'asc')->get();
-        $activebans = Penalty::whereIn('type', ['Ban', 'TempBan'])->where('inactive', 0)->where('time_expire', '<', Carbon::now()->getTimestamp())->orderBy('time_add', 'desc')->paginate(30);
+        $activebans = Penalty::whereIn('type', ['Ban', 'TempBan'])->where('inactive', 0)->where(function($query) {
+            $query->where('time_expire', '>', Carbon::now()->getTimestamp());
+            $query->orWhere('time_expire', '-1');
+        })->orderBy('time_add', 'desc')->paginate(30);
+
 
         \View::share('myplayer', $b3database->getMyPlayer());
         return view('b3::server.item')->with(['server' => $server, 'admins' => $admins, 'activebans' => $activebans]);

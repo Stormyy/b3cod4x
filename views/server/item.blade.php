@@ -31,7 +31,7 @@
             </tab>
             <tab name="Chat">
                 <h3 style="margin:0">Chatlog</h3>
-                <b3chat serverid="{{$server->id}}" :canchat="{!!  Auth::check() && Auth::user()->can('chat', $server)!!}"></b3chat>
+                <b3chat serverid="{{$server->id}}" :canchat="{{ Auth::check() && Auth::user()->can('chat', $server)}}"></b3chat>
             </tab>
             <tab name="Admins">
                 <h3 style="margin:0">Admins</h3>
@@ -59,6 +59,7 @@
                 </table>
             </tab>
             <tab name="Active bans">
+                Total bans: {{$activebans->total()}}
                 <table class="table table-striped">
                     <thead>
                     <tr>

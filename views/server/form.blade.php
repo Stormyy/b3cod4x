@@ -58,7 +58,7 @@
                         Add the following to your server.cfg to enable screenshots<br><br>
                         <code>
                             set nehoscreenshot_identkey {{$server->identifier}}<br><br>
-                            set nehoscreenshot_url "http://beta.luvclan.nl/b3/screenshot"<br><Br>
+                            set nehoscreenshot_url "{{url('/b3/screenshot')}}"<br><Br>
                             loadplugin nehoscreenshotuploader<br><br>
                             loadplugin claimplayer
                         </code>

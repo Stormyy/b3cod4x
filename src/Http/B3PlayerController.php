@@ -17,6 +17,7 @@ use Input;
 use q3tool;
 use Stormyy\B3\Helper\B3Database;
 use Stormyy\B3\Models\B3Server;
+use Stormyy\B3\Models\Group;
 use Stormyy\B3\Models\Penalty;
 
 class B3PlayerController extends Controller
