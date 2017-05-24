@@ -16,5 +16,11 @@
     "psr-4": {
       "Stormyy\\B3\\": "src/"
     }
+  },
+  "config": {
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "sort-packages": true,
+    "optimize-autoloader": true
   }
 }
