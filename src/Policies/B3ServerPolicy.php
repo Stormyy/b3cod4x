@@ -35,9 +35,9 @@ class B3ServerPolicy implements B3ServerPolicyInterface
         return $this->myplayer->group_bits >= \Config::get('b3cod4x.permissions.screenshot', 8);
     }
 
-    public function add(User $user)
+    public function manage(User $user)
     {
-        return false;
+        return $user != null;
     }
 
     public function remove(User $user, B3Server $b3Server)

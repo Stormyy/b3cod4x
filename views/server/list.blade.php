@@ -7,7 +7,7 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         Current b3 servers
-                        <a href="{{url('/b3/add')}}" class="btn btn-primary pull-right">Add server</a>
+                        @can('manage', \Stormyy\B3\Models\B3Server::class)l<a href="{{url('/b3/add')}}" class="btn btn-primary pull-right">Add server</a>@endcan
                     </div>
                     <div class="panel-body">
                         <table class="table table-striped">
@@ -21,7 +21,7 @@
                             @foreach($servers as $server)
                                 <tr>
                                     <td>{{$server->name}}</td>
-                                    <td><a class="btn btn-primary" href="{{url('/b3/'.$server->id.'/players')}}">View</a> <a class="btn btn-primary" href="{{url('/b3/'.$server->id.'/edit')}}">Edit</a></td>
+                                    <td><a class="btn btn-primary" href="{{url('/b3/'.$server->id.'/players')}}">View</a> @can('manage', $server)<a class="btn btn-primary" href="{{url('/b3/'.$server->id.'/edit')}}">Edit</a>@endcan</td>
                                 </tr>
                             @endforeach
                             </tbody>

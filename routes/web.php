@@ -12,10 +12,14 @@ Route::group(['namespace' => 'Stormyy\B3\Http'], function () {
         Route::get('/b3/{b3server}/chat', 'B3ServerController@getChat');
 
         Route::group(['middleware' => 'auth'], function () {
+            Route::group(['middleware' => ['can:manage,'.B3Server::class]], function(){
+                Route::get('/b3/add', 'B3ServerController@getAdd');
+                Route::post('/b3/{serverid}/save', 'B3ServerController@postSave');
+                Route::get('/b3/{serverid}/edit', 'B3ServerController@getEdit');
+            });
+
             Route::get('/b3/claim', 'B3PlayerController@getClaim');
-            Route::get('/b3/add', 'B3ServerController@getAdd');
-            Route::post('/b3/{serverid}/save', 'B3ServerController@postSave');
-            Route::get('/b3/{serverid}/edit', 'B3ServerController@getEdit');
+
             Route::get('/b3/{b3server}/unban/{penaltyid}', 'B3PlayerController@getRemovePenalty');
             Route::get('/b3/profile', 'B3PlayerController@getProfile');
 
