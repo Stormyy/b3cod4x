@@ -104,7 +104,7 @@
                                 <tr>
                                     <td>{{$screenshot->name}}</td>
                                     <td>{{$screenshot->created_at->toDayDateTimeString()}}</td>
-                                    <td>{{$screenshot->server->server->name}}</td>
+                                    <td>{{$screenshot->server->name}}</td>
                                     <td><a class="btn btn-primary"
                                            href="{{\Storage::disk('screenshots')->url($screenshot->filename)}}"
                                            data-fancybox="gallery">View</a></td>
