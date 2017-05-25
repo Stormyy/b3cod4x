@@ -17,10 +17,6 @@ class B3Server extends Model
     protected $table = 'b3servers';
     protected $casts = [];
 
-    public function server(){
-        return $this->belongsTo(Server::class);
-    }
-
     public function screenshots(){
         return $this->hasMany(Screenshot::class, 'server_id');
     }
