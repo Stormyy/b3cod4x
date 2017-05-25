@@ -32,6 +32,9 @@ class B3ServerPolicy implements B3ServerPolicyInterface
     public function screenshot(User $user, B3Server $b3Server)
     {
         $this->getPlayer($b3Server);
+        if(!$this->myplayer == null) {
+            return false;
+        }
         return $this->myplayer->group_bits >= \Config::get('b3cod4x.permissions.screenshot', 8);
     }
 
