@@ -31906,7 +31906,11 @@ return /******/ (function(modules) { // webpackBootstrap
 __webpack_require__(33);
 
 window.Vue = __webpack_require__(12);
-window.axios = __webpack_require__(14);
+
+var axios = __webpack_require__(14);
+window.axios = axios.create({
+    baseURL: window.Laravel.baseUrl
+});
 
 window.axios.defaults.headers.common = {
     'X-CSRF-TOKEN': window.Laravel.csrfToken,
@@ -31927,7 +31931,6 @@ __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('vue-toastr', __WEBPACK_IM
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_2_vue_echo___default.a, window.pusherinfo);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('tabs', __WEBPACK_IMPORTED_MODULE_3_vue_tabs_component__["Tabs"]);
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('tab', __WEBPACK_IMPORTED_MODULE_3_vue_tabs_component__["Tab"]);
-__WEBPACK_IMPORTED_MODULE_0_vue___default.a.http.options.root = window.Laravel.baseUrl;
 
 var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     el: '#b3app',
