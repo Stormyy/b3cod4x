@@ -19,6 +19,7 @@ use Stormyy\B3\Helper\B3Database;
 use Stormyy\B3\Models\B3Server;
 use Stormyy\B3\Models\Group;
 use Stormyy\B3\Models\Penalty;
+use Stormyy\B3\Models\Screenshot;
 
 class B3PlayerController extends Controller
 {
@@ -28,7 +29,7 @@ class B3PlayerController extends Controller
         $b3database= (new B3Database($server));
         $player = $b3database->getUser($guid);
         \View::share('myplayer', $b3database->getMyPlayer());
-        return view('b3::player.item')->with(['player' => $player, 'server' => $server, 'otherServers' => $b3database->getAllProfiles($guid)]);
+        return view('b3::player.item')->with(['player' => $player, 'server' => $server, 'otherServers' => $b3database->getAllProfiles($guid), 'screenshots' => $player->screenshots()->orderBy('created_at', 'desc')->get()]);
     }
 
     public function postBan(B3Server $server, $guid, Request $request)
@@ -75,6 +76,7 @@ class B3PlayerController extends Controller
                 $penalty->admin()->associate($b3database->getMyPlayer());
                 $penalty->duration = $minutes;
                 $penalty->inactive = 0;
+                $penalty->data = 'luvportal';
                 $penalty->reason = $request->get('reason');
                 $penalty->time_add = Carbon::now()->getTimestamp();
                 $penalty->time_edit = Carbon::now()->getTimestamp();
@@ -85,7 +87,6 @@ class B3PlayerController extends Controller
 
                 $tool = new q3tool($server->host, $server->port, \Crypt::decrypt($server->rcon));
                 $response = $tool->send_rcon('tempban ' . $guid . " " . $banMinutes . "m" . " " . $request->get('reason'));
-                return $response;
             } else {
 
                 $penalty = new Penalty();
@@ -94,6 +95,7 @@ class B3PlayerController extends Controller
                 $penalty->admin()->associate($b3database->getMyPlayer());
                 $penalty->duration = 0;
                 $penalty->inactive = 0;
+                $penalty->data = 'luvportal';
                 $penalty->reason = $request->get('reason');
                 $penalty->time_add = Carbon::now()->getTimestamp();
                 $penalty->time_edit = Carbon::now()->getTimestamp();
@@ -102,8 +104,17 @@ class B3PlayerController extends Controller
 
                 $tool = new q3tool($server->host, $server->port, \Crypt::decrypt($server->rcon));
                 $response = $tool->send_rcon('banclient ' . $guid . " " . $request->get('reason'));
-                return $response;
             }
+
+            if(($proof = Input::get('proof')) != null){
+                $screenshot = Screenshot::find($proof);
+                if($screenshot != null){
+                    $screenshot->penalty_id = $penalty->id;
+                    $screenshot->save();
+                }
+            }
+
+            return $response;
         } else {
             throw new AuthorizationException();
         }

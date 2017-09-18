@@ -14,6 +14,7 @@ use Carbon\Carbon;
 use Stormyy\B3\Models\Alias;
 use Stormyy\B3\Models\B3Server;
 use Stormyy\B3\Models\IpAlias;
+use Stormyy\B3\Models\Penalty;
 use Stormyy\B3\Models\Player;
 
 class B3Database
@@ -115,6 +116,30 @@ class B3Database
         }
 
         return $servers;
+    }
+
+    public function isPlayerBanned($guid){
+        return \Cache::remember('player-'.$guid, 60, function () use($guid) {
+            $b3servers = B3Server::get();
+            foreach ($b3servers as $b3server) {
+                \Config::set('database.connections.b3-' . $b3server->id, json_decode(\Crypt::decrypt(($b3server->dbSettings)), true));
+                $player = new Player();
+                $player = $player->setConnection('b3-'.$b3server->id)->where('guid', $guid)->first();
+                if($player) {
+
+                    $penalties = new Penalty();
+                    $penalties = $penalties->setConnection('b3-' . $b3server->id)->where('client_id', $player->id)->get();
+
+                    /** @var Penalty $penalty */
+                    foreach ($penalties as $penalty) {
+                        if ($penalty->isActive()) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        });
     }
 
 }

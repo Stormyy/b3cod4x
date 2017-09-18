@@ -43,7 +43,7 @@
                             @endcan
                             <div class="col-sm-1 pull-right">
                                 @can('ban', [$server, $player])
-                                    <b3ban :player="{{$player}}"  serverid="{{$server->id}}"></b3ban>
+                                    <b3ban :player="{{$player}}"  serverid="{{$server->id}}" :screenshots="{{$screenshots}}"></b3ban>
                                 @endcan
                             </div>
                         </div>
@@ -100,13 +100,13 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($player->screenshots()->orderBy('created_at', 'desc')->get() as $screenshot)
+                            @foreach($screenshots as $screenshot)
                                 <tr>
                                     <td>{{$screenshot->name}}</td>
                                     <td>{{$screenshot->created_at->toDayDateTimeString()}}</td>
                                     <td>{{$screenshot->server->name}}</td>
                                     <td><a class="btn btn-primary"
-                                           href="{{\Storage::disk('screenshots')->url($screenshot->filename)}}"
+                                           href="{{$screenshot->url}}"
                                            data-fancybox="gallery">View</a></td>
                                 </tr>
                             @endforeach

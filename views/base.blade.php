@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div id="b3app">
+    <div id="b3app" v-pre="">
         <div style="margin-top:100px">
             @if(Auth::check() && Auth::user()->guid == null)
                 <div class="container">

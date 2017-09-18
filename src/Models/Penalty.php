@@ -9,6 +9,7 @@
 namespace Stormyy\B3\Models;
 
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Penalty extends Model
@@ -25,4 +26,7 @@ class Penalty extends Model
         return $this->belongsTo(Player::class, 'admin_id');
     }
 
+    public function isActive(){
+        return in_array($this->type, ['Ban', 'TempBan']) && $this->inactive == 0 && ($this->time_expire > Carbon::now()->getTimestamp() || $this->time_expire == -1);
+    }
 }

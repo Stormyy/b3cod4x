@@ -28,7 +28,11 @@
                         </table>
                     </div>
                 </div>
+                @if(Auth::user() != null && Auth::user()->isSuperAdmin)
+                    <a class="btn btn-block btn-primary btn-lg" href="/b3/scan">Scan all servers</a>
+                @endif
             </div>
         </div>
     </div>
+
 @endsection

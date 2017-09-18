@@ -12,26 +12,15 @@ namespace Stormyy\B3\Models;
 use App\Server;
 use Illuminate\Database\Eloquent\Model;
 
-class Screenshot extends Model
+class Mark extends Model
 {
     protected $connection = 'mysql';
-    protected $table = 'screenshots';
+    protected $table = 'marks';
     protected $dates = [
         'created_at',
         'updated_at',
     ];
 
     protected $appends = ['url'];
-
-    public function server(){
-        return $this->belongsTo(B3Server::class);
-    }
-
-    public function getUrlAttribute($value)
-    {
-        return \Storage::disk('screenshots')->url($this->filename);
-    }
-
-
 
 }

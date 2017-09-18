@@ -17,6 +17,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Http\Request;
 use Stormyy\B3\Events\ScreenshotTaken;
 use Stormyy\B3\Helper\B3Database;
+use Stormyy\B3\Helper\Cod4Server;
 use Stormyy\B3\Helper\PermissionHelper;
 use Stormyy\B3\Models\B3Server;
 use Stormyy\B3\Models\ChatLog;
@@ -52,21 +53,23 @@ class B3ServerController extends Controller
 
     public function getPlayers(B3Server $server)
     {
-        /** @var Server $server */
-        $b3users = (new B3Database($server))->getCurrentClients();
-        $b3CurrentUserList = [];
-        foreach ($b3users as $b3user) {
-
-            $b3user->screenshots = $server->screenshots()->where('guid', $b3user->GUID)->orderBy('created_at', 'desc')->get();;
-            $b3user->IP = PermissionHelper::ipToFlag($b3user->IP) . " " . PermissionHelper::ip($b3user->IP);
-            if (\Auth::check()) {
-                $b3user->AllowScreenshot = \Auth::user()->can('screenshot', [$server]);
-                $b3user->AllowClaim = \Auth::user()->can('claim', [$server]);
+        return \Cache::remember('server-'.$server->id.'-players', Carbon::now()->addSeconds(5), function() use($server) {
+            /** @var Server $server */
+            $b3database = new B3Database($server);
+            $b3users = ($b3database)->getCurrentClients();
+            $b3CurrentUserList = [];
+            foreach ($b3users as $b3user) {
+                $b3user->screenshots = $server->screenshots()->where('guid', (int)$b3user->GUID)->orderBy('created_at', 'desc')->get();;
+                $b3user->IP = PermissionHelper::ipToFlag($b3user->IP) . " " . PermissionHelper::ip($b3user->IP);
+                if (\Auth::check()) {
+                    $b3user->AllowScreenshot = \Auth::user()->can('screenshot', [$server]);
+                }
+                $b3user->bannedOnOtherServers = $b3database->isPlayerBanned($b3user->GUID);
+                $b3CurrentUserList[] = $b3user;
             }
-            $b3CurrentUserList[] = $b3user;
-        }
 
-        return $b3CurrentUserList;
+            return $b3CurrentUserList;
+        });
     }
 
     public function postScreenshot(Request $request)
@@ -104,6 +107,7 @@ class B3ServerController extends Controller
                     //$screenshot->created_at = new Carbon($time);
                     $screenshot->save();
 
+                    \Cache::forget('server-'.$server->id.'-players');
                     event(new ScreenshotTaken($screenshot));
 
                     return 'status=success';
@@ -133,10 +137,7 @@ class B3ServerController extends Controller
     public function postScreenshotAPI(B3Server $server)
     {
         $guid = Input::get('guid');
-
-        $tool = new q3tool($server->host, $server->port, \Crypt::decrypt($server->rcon));
-        $response = $tool->send_rcon('getss ' . $guid.' test');
-        return $response;
+        return Cod4Server::screenshot($server, $guid);
     }
 
     public function getAdd()
@@ -193,13 +194,15 @@ class B3ServerController extends Controller
 
     public function getChat(B3Server $server)
     {
-        $b3database = (new B3Database($server));
-        $chatlogs = ChatLog::with('player')->orderBy('msg_time', 'desc')->limit(50)->get();
-        $chatlogs->map(function ($chatlog, $key) {
-            $date = Carbon::createFromTimestamp($chatlog->msg_time);
-            $chatlog->msg_time = $date->format('d M ').$date->toTimeString();
+        return \Cache::remember('chat-'.$server->id,  Carbon::now()->addSecond(), function () use($server){
+            $b3database = (new B3Database($server));
+            $chatlogs = ChatLog::with('player')->orderBy('msg_time', 'desc')->limit(50)->get();
+            $chatlogs->map(function ($chatlog, $key) {
+                $date = Carbon::createFromTimestamp($chatlog->msg_time);
+                $chatlog->msg_time = $date->format('d M ').$date->toTimeString();
+            });
+            return $chatlogs;
         });
-        return $chatlogs;
     }
 
     public function postChat(B3Server $server){
@@ -218,7 +221,10 @@ class B3ServerController extends Controller
 
             $tool = new q3tool($server->host, $server->port, \Crypt::decrypt($server->rcon));
             $response = $tool->send_rcon("say ^7(^3" . $myplayer->name . "^7): ^2" . \Input::get('message'));
+            \Cache::forget('chat-'.$server->id);
         }
+
+
     }
 
 

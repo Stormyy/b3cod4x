@@ -48,4 +48,8 @@ class Player extends Model
     public function chatlogs(){
         return $this->hasMany(ChatLog::class, 'client_id');
     }
+
+    public function marks(){
+        return $this->hasMany(Mark::class, 'guid')->orderBy('created_at', 'desc');
+    }
 }

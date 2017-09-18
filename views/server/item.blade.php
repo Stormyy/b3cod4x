@@ -24,6 +24,8 @@
                     </thead>
                     <tbody is="b3players" serverid="{{$server->id}}"></tbody>
                 </table>
+
+                All players noted in <font color="#ff6d6b">red</font> are currently banned in another luv server
             </tab>
             <tab name="Search">
                 <h3 style="margin:0">Search players</h3>
@@ -66,9 +68,9 @@
                         <th>Type</th>
                         <th>Player</th>
                         <th>Reason</th>
-                        <th>Expires</th>
                         <th>Added</th>
                         <th>Admin</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -77,10 +79,18 @@
                             <td>{{$activeban->type}}</td>
                             <td><a href="{{url('/b3/'.$server->id.'/player/'.$activeban->player->guid)}}">{{$activeban->player->name}}</a></td>
                             <td>{{$activeban->reason}}</td>
-                            <td>{{($activeban->time_expire != -1) ? \Carbon\Carbon::createFromTimestamp($activeban->time_expire)->toDateTimeString() : 'Never'}}</td>
                             <td>{{\Carbon\Carbon::createFromTimestamp($activeban->time_add)->toDateTimeString()}}</td>
                             <td>{!! ($activeban->admin_id != 0) ? '<a href="'.url('/b3/'.$server->id.'/player/'.$activeban->admin->guid).'">'.$activeban->admin->name.'</a>' : '' !!}</td>
+                            <td><a onclick="$('#moreinfo-{{$activeban->id}}').toggle()" href="#"><i class="fa fa-info-circle"></i> More info</a></td>
                         </tr>
+                        @php $screenshot = $activeban->player->screenshots()->where('server_id', $server->id)->where('penalty_id', $activeban->id)->first(); @endphp
+                        <tr style="display:none;" id="moreinfo-{{$activeban->id}}">
+                            <td style="font-weight:bold">Expires at:</td>
+                            <td>{{($activeban->time_expire != -1) ? \Carbon\Carbon::createFromTimestamp($activeban->time_expire)->toDateTimeString() : 'Never'}}</td>
+                            <td style="font-weight:bold">Proof</td>
+                            <td colspan="2">@if($screenshot)<a href="{{$screenshot->url}}" data-fancybox=""><img src="{{$screenshot->url}}" height="300px"></a> @else None @endif</td>
+                        </tr>
+
                     @endforeach
                     </tbody>
                 </table>
