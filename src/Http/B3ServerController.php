@@ -33,7 +33,13 @@ class B3ServerController extends Controller
 {
     public function getList()
     {
-        return view('b3::server.list')->with(['servers' => B3Server::get()]);
+        $b3servers = B3Server::get();
+        $b3database = new B3Database($b3servers->first());
+        foreach($b3servers as $b3server){
+            $b3server->online = $b3database->getActiveCurrentClients($b3server);
+            $b3server->slots = \Cache::remember('b3server-'.$b3server.'-slots', 60, function() use($b3server, $b3database) { return $b3database->getMaxSlots($b3server); });
+        }
+        return view('b3::server.list')->with(['servers' => $b3servers]);
     }
 
     public function get(B3Server $server)
@@ -53,7 +59,7 @@ class B3ServerController extends Controller
 
     public function getPlayers(B3Server $server)
     {
-        return \Cache::remember('server-'.$server->id.'-players', Carbon::now()->addSeconds(5), function() use($server) {
+        return ['players' => \Cache::remember('server-'.$server->id.'-players', Carbon::now()->addSeconds(10), function() use($server) {
             /** @var Server $server */
             $b3database = new B3Database($server);
             $b3users = ($b3database)->getCurrentClients();
@@ -61,33 +67,31 @@ class B3ServerController extends Controller
             foreach ($b3users as $b3user) {
                 $b3user->screenshots = $server->screenshots()->where('guid', (int)$b3user->GUID)->orderBy('created_at', 'desc')->get();;
                 $b3user->IP = PermissionHelper::ipToFlag($b3user->IP) . " " . PermissionHelper::ip($b3user->IP);
-                if (\Auth::check()) {
-                    $b3user->AllowScreenshot = \Auth::user()->can('screenshot', [$server]);
-                }
                 $b3user->bannedOnOtherServers = $b3database->isPlayerBanned($b3user->GUID);
                 $b3CurrentUserList[] = $b3user;
             }
 
             return $b3CurrentUserList;
-        });
+        }), 'isAllowedToScreenshot' => (\Auth::check() ? \Auth::user()->can('screenshot', [$server]) : false)];
     }
 
     public function postScreenshot(Request $request)
     {
+        parse_str(urldecode(file_get_contents('php://input')), $input);
 
-        $identkey = Input::get('identkey');
+        $identkey = $input['identkey'];
         $server = B3Server::where('identifier', $identkey)->first();
-        $serverport = Input::get('serverport');
-        if (Input::get('command') == "HELO") {
+        $serverport = $input['serverport'];
+        if ($input['command'] == "HELO") {
             $server->host = $request->ip();
             $server->port = $serverport;
-            $server->rcon = \Crypt::encrypt(Input::get('rcon'));
+            $server->rcon = \Crypt::encrypt($input['rcon']);
             $server->save();
             return "status=okay";
         }
 
-        if (Input::get('command') == "submitshot") {
-            $data = Input::get('data');
+        if ($input['command'] == "submitshot") {
+            $data = $input['data'];
             if (!($serverport || $data)) {
                 return "status=\"Error: Empty serverport or data value\"";
             } else {
@@ -107,7 +111,7 @@ class B3ServerController extends Controller
                     //$screenshot->created_at = new Carbon($time);
                     $screenshot->save();
 
-                    \Cache::forget('server-'.$server->id.'-players');
+                    \Cache::forget('server-' . $server->id . '-players');
                     event(new ScreenshotTaken($screenshot));
 
                     return 'status=success';
@@ -116,7 +120,7 @@ class B3ServerController extends Controller
                 }
             }
         } else {
-            \Log::error($request);
+            \Log::error($input);
             $modelName = \Config::get('b3cod4x.usermodel');
             $user = $modelName::where('claimCode', $request->get('code'))->first();
             $user->guid = $request->get('player');

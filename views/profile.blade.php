@@ -34,6 +34,8 @@
                             @endforeach
                             </tbody>
                         </table>
+
+                        <div style="text-align:right; font-weight: bold;">Do you got a new profile??? &nbsp;&nbsp;<a class="btn btn-success" href="{{url('/b3/claim')}}">Click here to claim your new profile</a></div>
                     </div>
                 </div>
             </div>

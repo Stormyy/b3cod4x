@@ -27,6 +27,19 @@ class B3Database
         \Config::set('database.connections.b3', json_decode(\Crypt::decrypt(($server->dbSettings)), true));
     }
 
+    public function getActiveCurrentClients(B3Server $b3server)
+    {
+        \Config::set('database.connections.b3-' . $b3server->id, json_decode(\Crypt::decrypt(($b3server->dbSettings)), true));
+        return \DB::connection('b3-' . $b3server->id)->table('current_clients')->count();
+    }
+
+    public function getMaxSlots(B3Server $b3server)
+    {
+        \Config::set('database.connections.b3-' . $b3server->id, json_decode(\Crypt::decrypt(($b3server->dbSettings)), true));
+        return \DB::connection('b3-' . $b3server->id)->table('current_svars')->where('name', 'sv_maxclients')->value('value');
+    }
+
+
     public function getCurrentClients(){
         return \DB::connection('b3')->select('SELECT * FROM current_clients');
     }
@@ -105,7 +118,8 @@ class B3Database
 
             if($player != null && $player->exists){
                 $servers[$b3server->id]['name'] = $b3server->name;
-                $isBanned = $player->penalties()->where('inactive', 0)->whereIn('type', ['Ban', 'TempBan'])->where(function($query){
+                $penalty = (new Penalty())->setConnection('b3-'.$b3server->id);
+                $isBanned = $penalty->where('client_id', $player->id)->where('inactive', 0)->whereIn('type', ['Ban', 'TempBan'])->where(function($query){
                     $query->where('time_expire', '-1');
                     $query->orWhere('time_expire', '>', Carbon::now()->getTimestamp());
                 })->count();
