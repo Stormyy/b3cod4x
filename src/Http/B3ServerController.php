@@ -120,13 +120,12 @@ class B3ServerController extends Controller
                 }
             }
         } else {
-            \Log::error($input);
             $modelName = \Config::get('b3cod4x.usermodel');
             $user = $modelName::where('claimCode', $request->get('code'))->first();
             $user->guid = $request->get('player');
             $user->save();
 
-            \Log::error($user);
+            \Log::info($user);
 
             return 'status=success';
         }
@@ -141,7 +140,7 @@ class B3ServerController extends Controller
     public function postScreenshotAPI(B3Server $server)
     {
         $guid = Input::get('guid');
-        return Cod4Server::screenshot($server, $guid);
+        return Cod4Server::screenshot($server, $guid, \Auth::user());
     }
 
     public function getAdd()

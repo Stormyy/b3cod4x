@@ -12,7 +12,7 @@
                         To claim a player type the following command in to any server linked to b3:<br><br>
 
                         /claimplayer {{Auth::user()->claimCode}}<br>
-                        <strong>You have to run this command in chat with / NOT in console</strong>
+                        <strong>Run the command above in chat and NOT the console!!!!!!!</strong>
                     </div>
                 </div>
             </div>

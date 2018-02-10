@@ -1,15 +1,20 @@
 @extends('b3::base')
 
 @section('b3content')
+    <script type="javascript">
+        function test123(){
+            alert('yeeeeey');
+        }
+    </script>
     <link rel="stylesheet" href="{{asset('vendor/stormyy/b3cod4x/css/b3app.css')}}"/>
     <vue-toastr ref="toastr"></vue-toastr>
     <div class="container">
         <h1 style="margin-top:0;margin-bottom:30px;">{{$server->name}}</h1>
         <tabs cache-lifetime="10">
             <tab name="Players">
-                <h3 style="margin:0">Current players</h3>
-                <table class="table table-striped">
-                    <thead>
+                <h3 class="pull-left" style="margin:0">Current players</h3>
+                <b3players serverid="{{$server->id}}">
+                    <template :is="thead">
                     <tr>
                         <th>Id</th>
                         <th>Playername</th>
@@ -21,9 +26,8 @@
                             <th></th>
                         @endif
                     </tr>
-                    </thead>
-                    <tbody is="b3players" serverid="{{$server->id}}"></tbody>
-                </table>
+                    </template>
+                </b3players>
 
                 All players noted in <font color="#ff6d6b">red</font> are currently banned in another luv server
             </tab>
