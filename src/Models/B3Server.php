@@ -21,8 +21,4 @@ class B3Server extends Model
         return $this->hasMany(Screenshot::class, 'server_id');
     }
 
-    public function takenBy(){
-        return $this->belongsTo(\Config::get('b3cod4x.usermodel'), 'takenBy_id');
-    }
-
 }

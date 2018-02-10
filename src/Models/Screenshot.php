@@ -32,6 +32,8 @@ class Screenshot extends Model
         return \Storage::disk('screenshots')->url($this->filename);
     }
 
-
+    public function takenBy(){
+        return $this->belongsTo(\Config::get('b3cod4x.usermodel'), 'takenBy_id');
+    }
 
 }
