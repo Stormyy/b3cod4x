@@ -48635,9 +48635,14 @@ window['moment'] = moment;
         if (this.$echo.options.key !== "") {
             this.$echo.channel('screenshots.' + this.serverid).listen('ScreenshotTaken', function (data) {
                 _this2.reloadPlayers(function (self) {
+                    var msg = "Screenshot of player " + data.screenshot.name + " has been uploaded";
+                    if (data.takenBy !== null) {
+                        msg = 'Screenshot of player ' + data.screenshot.name + ' taken by ' + data.takenBy.name + ' has been uploaded';
+                    }
+
                     self.$root.$refs.toastr.Add({
                         title: "Screenshot has been taken", // Toast Title
-                        msg: "Screenshot of player " + data.screenshot.name + " has been uploaded", // Message
+                        msg: msg, // Message
                         clickClose: true, // Click Close Disable
                         closeOnHover: true,
                         timeout: 5 * 60 * 1000, // Remember defaultTimeout is 5 sec..

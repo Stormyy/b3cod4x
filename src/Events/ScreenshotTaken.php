@@ -22,6 +22,7 @@ class ScreenshotTaken implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $screenshot;
+    public $takenBy;
 
     /**
      * Create a new event instance.
@@ -31,6 +32,12 @@ class ScreenshotTaken implements ShouldBroadcast
     public function __construct(Screenshot $screenshot)
     {
         $this->screenshot = $screenshot;
+        if ($screenshot->takenBy) {
+            $this->takenBy = [
+                'name' => $screenshot->takenBy->name,
+                'id' => $screenshot->takenBy->id
+            ];
+        }
     }
 
     /**
@@ -40,6 +47,6 @@ class ScreenshotTaken implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('screenshots.'.$this->screenshot->server->id);
+        return new Channel('screenshots.' . $this->screenshot->server->id);
     }
 }
