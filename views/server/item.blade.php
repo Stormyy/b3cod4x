@@ -1,11 +1,6 @@
 @extends('b3::base')
 
 @section('b3content')
-    <script type="javascript">
-        function test123(){
-            alert('yeeeeey');
-        }
-    </script>
     <link rel="stylesheet" href="{{asset('vendor/stormyy/b3cod4x/css/b3app.css')}}"/>
     <vue-toastr ref="toastr"></vue-toastr>
     <div class="container">
