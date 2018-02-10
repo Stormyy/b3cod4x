@@ -75,6 +75,17 @@ class B3ServerController extends Controller
         }), 'isAllowedToScreenshot' => (\Auth::check() ? \Auth::user()->can('screenshot', [$server]) : false)];
     }
 
+    private function parseFileNameToUser($filename){
+        $filename = substr($filename, strpos($filename, '/')+1);
+        $filename = explode('-', $filename);
+        $userid = isset($filename[1]) ? $filename[1] : null;
+
+        if(is_numeric($userid) && $userid !== null){
+            $modelName = \Config::get('b3cod4x.usermodel');
+            return $modelName::find($userid);
+        }
+    }
+
     public function postScreenshot(Request $request)
     {
         parse_str(urldecode(file_get_contents('php://input')), $input);
@@ -103,12 +114,21 @@ class B3ServerController extends Controller
                     $filename = $serverport . $guid . time() . ".jpg";
                     Storage::disk('screenshots')->put($filename, $screenshotdata);
 
+
+
                     $screenshot = new Screenshot();
                     $screenshot->filename = $filename;
                     $screenshot->guid = $guid;
                     $screenshot->name = utf8_encode($playername);
                     $screenshot->server()->associate($server);
-                    //$screenshot->created_at = new Carbon($time);
+
+                    if(isset($input['filename'])) {
+                        $user = $this->parseFileNameToUser($input['filename']);
+                        if($user !== null){
+                            $screenshot->takenBy()->associate($user);
+                        }
+                    }
+
                     $screenshot->save();
 
                     \Cache::forget('server-' . $server->id . '-players');
