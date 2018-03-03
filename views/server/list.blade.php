@@ -7,7 +7,7 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         Current b3 servers
-                        @can('manage', \Stormyy\B3\Models\B3Server::class)l<a href="{{url('/b3/add')}}" class="btn btn-primary pull-right">Add server</a>@endcan
+                        @can('manage', \Stormyy\B3\Models\B3Server::class)<a href="{{url('/b3/add')}}" class="btn btn-primary pull-right">Add server</a>@endcan
                     </div>
                     <div class="panel-body">
                         <table class="table table-striped">
