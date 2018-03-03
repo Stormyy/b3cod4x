@@ -35,5 +35,4 @@ Route::group(['namespace' => 'Stormyy\B3\Http'], function () {
             });
         });
     });
-    Route::post('/b3/screenshot', 'B3ServerController@postScreenshot');
 });
