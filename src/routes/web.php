@@ -7,6 +7,7 @@ Route::group(['namespace' => 'Stormyy\B3\Http'], function () {
         Route::get('/b3', 'B3ServerController@getList');
         Route::get('/b3/{b3server}/players', 'B3ServerController@get');
         Route::get('/b3/{b3server}/player/{playerid}', 'B3PlayerController@get');
+        Route::get('/b3/{b3server}/player', 'B3ServerController@getPlayers');
 
         Route::group(['middleware' => 'auth'], function () {
             Route::group(['middleware' => ['can:manage,'.B3Server::class]], function(){

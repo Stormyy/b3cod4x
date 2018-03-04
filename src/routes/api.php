@@ -8,7 +8,6 @@ Route::group(['namespace' => 'Stormyy\B3\Http'], function () {
 
 
         Route::post('/b3/screenshot', 'B3ServerController@postScreenshot');
-        Route::get('/b3/{b3server}/player', 'B3ServerController@getPlayers');
         Route::get('/b3/{b3server}/search/{query?}', 'B3ServerController@getSearch');
     });
 });
