@@ -39,9 +39,17 @@ class B3ServerController extends Controller
 		}
         
         foreach($b3servers as $b3server){
-            $b3server->online = $b3database->getActiveCurrentClients($b3server);
-            $b3server->slots = \Cache::remember('b3server-'.$b3server.'-slots', 60, function() use($b3server, $b3database) { return $b3database->getMaxSlots($b3server); });
+            try {
+                $b3server->online = $b3database->getActiveCurrentClients($b3server);
+                $b3server->slots = \Cache::remember('b3server-' . $b3server . '-slots', 60, function () use ($b3server, $b3database) {
+                    return $b3database->getMaxSlots($b3server);
+                });
+            } catch (\Exception $ex){
+                $b3server->online = -1;
+                $b3server->slots = -1;
+            }
         }
+
         return view('b3::server.list')->with(['servers' => $b3servers]);
     }
 
