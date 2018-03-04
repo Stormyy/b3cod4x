@@ -33,6 +33,11 @@ abstract  class Cod4Server
 
             $tool = new q3tool($server->host, $server->port, \Crypt::decrypt($server->rcon));
             $response = $tool->send_rcon('getss ' . $guid . $filename);
+
+            if(str_contains($response, 'Bad rcon')){
+                throw new \Exception('Bad rcon');
+            }
+
             return $response;
         } catch (\Exception $exception){
             return response()->json([
