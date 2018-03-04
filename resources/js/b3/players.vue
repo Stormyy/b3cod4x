@@ -82,6 +82,8 @@
             postScreenshot(player){
                 axios.post('/b3/' + this.serverid + '/screenshot/api', {"guid": player.GUID}).then(response => {
                     swal("Screenshot", "Screenshot request send for " + player.Name + "\n" + response.data.split('print')[1], "success");
+                }).catch(error =>{
+                    swal("Screenshot", error.response.data.message, "error");
                 });
             },
             cssClass(player){
