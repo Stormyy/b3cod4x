@@ -62,7 +62,7 @@
             latestScreenshot(player){
                 let latestScreenshot = player.screenshots[0];
                 if (latestScreenshot !== undefined) {
-                    let currentDate = moment(moment().tz('Europe/Amsterdam').subtract(5, 'seconds').format('YYYY-MM-DD HH:mm'));
+                    let currentDate = moment(moment().tz('Europe/Amsterdam').add(5, 'seconds').format('YYYY-MM-DD HH:mm'));
                     return '<a href="' + latestScreenshot.url + '" data-fancybox="gallery" data-caption="' + player.Name + '">' + moment(latestScreenshot.created_at).from(currentDate) + '</a>';
                 }
             },
