@@ -28,6 +28,9 @@
             </div>
             <hr>
             <h2>Proof</h2>
+            <vue-select-image :dataImages="screenshotsPicker" w="50%" @onselectimage="changedProof">
+            </vue-select-image>
+
             <select class="image-picker show-labels" v-model="proof" id="proof">
                 <option :value="null"></option>
                 <option v-for="screenshot in screenshots" :data-img-label="screenshot.created_at"
@@ -46,9 +49,11 @@
 
 <script>
     import {modal, checkbox} from 'vue-strap';
+    import VueSelectImage from 'vue-select-image';
+
     export default {
         components: {
-            modal, checkbox
+            modal, checkbox, VueSelectImage
         },
         data(){
             return {
@@ -58,7 +63,8 @@
                 duration: 1,
                 durationType: 'minute',
                 proof: null,
-                noProof: false
+                noProof: false,
+                screenshotsPicker: []
             }
         },
         props: {
@@ -94,14 +100,19 @@
 
                 this.show = false;
             },
-            changedProof(select, newValues, oldValues, event){
-                this.proof = newValues;
+
+            changedProof(test){
+                console.log(test);
+                //this.proof = newValues;
             }
         },
         mounted(){
-            $("select#proof").imagepicker({
-                hide_select : true,
-                //changed  : this.changedProof
+            this.screenshotsPicker.forEach(screenshot => {
+                this.screenshotsPicker.push({
+                    id: screenshot.id,
+                    src: screenshot.url,
+                    alt: screenshot.created_at
+                })
             });
         }
     }

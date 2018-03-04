@@ -13,9 +13,11 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bootstrap-sweetalert": "^1.0.1",
+    "jquery": "^3.3.1",
     "moment-timezone": "^0.5.14",
     "vue": "^2.5.13",
     "vue-echo": "^1.0.1",
+    "vue-select-image": "^1.1.0",
     "vue-strap": "^1.1.40",
     "vue-tabs-component": "^1.4.0",
     "vue-toastr": "^2.0.12"
