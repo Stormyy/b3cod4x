@@ -46,7 +46,7 @@ class B3Database
 
     public function getUser($guid)
     {
-        return Player::where('guid', $guid)->first();
+        return Player::where('guid', $guid)->firstOrFail();
     }
 
     private function parsePlayer($player){
