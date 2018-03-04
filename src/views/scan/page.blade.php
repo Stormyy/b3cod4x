@@ -2,7 +2,7 @@
 
 @section('content')
     <link rel="stylesheet" href="{{asset('vendor/stormyy/b3cod4x/css/b3app.css')}}"/>
-    <div id="b3app" v-pre="">
+    <div id="b3app">
         <vue-toastr ref="toastr"></vue-toastr>
         <div class="container-fluid" style="margin-top:100px;">
             <div class="row">

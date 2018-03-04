@@ -91,7 +91,10 @@ module.exports = {
     performance: {
         hints: false
     },
-    devtool: '#eval-source-map'
+    devtool: '#eval-source-map',
+    plugins: [
+        new ExtractTextPlugin('../css/b3app.css')
+    ]
 }
 
 if (process.env.NODE_ENV === 'production') {
@@ -118,6 +121,5 @@ if (process.env.NODE_ENV === 'production') {
         new webpack.LoaderOptionsPlugin({
             minimize: true
         }),
-        new ExtractTextPlugin('../css/b3app.css')
     ])
 }

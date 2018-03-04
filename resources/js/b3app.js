@@ -24,12 +24,18 @@ import Toastr from 'vue-toastr';
 import VueEcho from 'vue-echo';
 import {Tabs, Tab} from 'vue-tabs-component';
 
+import b3playersearch from './b3/search.vue';
+import b3chat from './b3/chat.vue';
+import b3setrank from './b3/rank.vue';
+import b3players from './b3/players.vue';
+import b3ban from './b3/ban.vue';
 
-Vue.component('b3playersearch', require('./b3/search.vue'));
-Vue.component('b3chat', require('./b3/chat.vue'));
-Vue.component('b3setrank', require('./b3/rank.vue'));
-Vue.component('b3players', require('./b3/players.vue'));
-Vue.component('b3ban', require('./b3/ban.vue'));
+
+Vue.component('b3playersearch', b3playersearch);
+Vue.component('b3chat', b3chat);
+Vue.component('b3setrank', b3setrank);
+Vue.component('b3players', b3players);
+Vue.component('b3ban', b3ban);
 Vue.component('vue-toastr',Toastr);
 Vue.use(VueEcho, window.pusherinfo);
 Vue.component('tabs', Tabs);
@@ -42,6 +48,8 @@ const app = new Vue({
     }
 
 });
+
+window.b3app = app;
 
 
 

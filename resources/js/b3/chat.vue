@@ -47,7 +47,10 @@
         },
         props: {
             serverid: {required: true},
-            canchat: {required: true}
+            canchat: {
+                type:Boolean,
+                required:true
+            }
         },
         methods: {
             refresh(){

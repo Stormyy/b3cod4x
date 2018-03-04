@@ -28,15 +28,9 @@
             </div>
             <hr>
             <h2>Proof</h2>
-            <vue-select-image :dataImages="screenshotsPicker" w="50%" @onselectimage="changedProof">
+            <vue-select-image :dataImages="screenshotsPicker" @onselectimage="changedProof">
             </vue-select-image>
 
-            <select class="image-picker show-labels" v-model="proof" id="proof">
-                <option :value="null"></option>
-                <option v-for="screenshot in screenshots" :data-img-label="screenshot.created_at"
-                        :data-img-src="screenshot.url" :value="screenshot.id">{{screenshot.id}}
-                </option>
-            </select>
             <div class="form-group">
                 <label for="noProof">
                     <input type="checkbox" id="noProof" v-model="noProof" :value="true">
@@ -79,11 +73,7 @@
                     return;
                 }
 
-                this.proof = $("select#proof").val();
-
-                console.log(this.noProof);
-                console.log(this.proof);
-                if ((this.proof === null || this.proof === "")&& this.noProof === false) {
+                if ((this.proof === null || this.proof === "" || typeof this.proof === 'undefined' )&& this.noProof === false) {
                     swal("Ban " + this.player.name, "Proof is required!", "error");
                     return;
                 }
@@ -101,13 +91,12 @@
                 this.show = false;
             },
 
-            changedProof(test){
-                console.log(test);
-                //this.proof = newValues;
+            changedProof(selectedScreenshot){
+                this.proof = selectedScreenshot.id;
             }
         },
         mounted(){
-            this.screenshotsPicker.forEach(screenshot => {
+            this.screenshots.forEach(screenshot => {
                 this.screenshotsPicker.push({
                     id: screenshot.id,
                     src: screenshot.url,
@@ -117,3 +106,15 @@
         }
     }
 </script>
+
+<style>
+    .vue-select-image__item {
+        width:50%;
+        margin: 0 !important;
+    }
+
+    .vue-select-image__thumbnail {
+        margin-left:10px;
+        margin-right:10px;
+    }
+</style>

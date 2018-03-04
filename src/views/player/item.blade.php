@@ -188,7 +188,7 @@
                             @php $ipaliases = $player->ipaliases()->orderBy('time_edit', 'desc')->paginate(10, ['*'], 'ipaliases_page'); @endphp
                             @foreach($ipaliases as $ipalias)
                                 <tr>
-                                    <td>{{$ipalias->ip}}</td>
+                                    <td>{!! \Stormyy\B3\Helper\PermissionHelper::ipToFlag($ipalias->ip) !!} {{\Stormyy\B3\Helper\PermissionHelper::ip($ipalias->ip)}}</td>
                                     <td>{{$ipalias->num_used}}</td>
                                     <td>{{\Carbon\Carbon::createFromTimestampUTC($ipalias->time_edit)->toDayDateTimeString()}}</td>
                                 </tr>

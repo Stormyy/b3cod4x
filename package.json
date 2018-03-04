@@ -18,7 +18,7 @@
     "vue": "^2.5.13",
     "vue-echo": "^1.0.1",
     "vue-select-image": "^1.1.0",
-    "vue-strap": "^1.1.40",
+    "vue-strap": "github:wffranco/vue-strap",
     "vue-tabs-component": "^1.4.0",
     "vue-toastr": "^2.0.12"
   },
