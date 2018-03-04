@@ -23,17 +23,19 @@ class B3AddonServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
-        $this->loadMigrationsFrom(__DIR__ . '/../migrations');
-        $this->loadViewsFrom(__DIR__ . '/../views', 'b3');
+        $this->loadRoutesFrom(__DIR__ . '/routes/web.php');
+        $this->loadRoutesFrom(__DIR__ . '/routes/api.php');
+
+        $this->loadMigrationsFrom(__DIR__ . '/migrations');
+        $this->loadViewsFrom(__DIR__ . '/views', 'b3');
 
         $this->publishes([
             __DIR__.'/../assets' => public_path('vendor/stormyy/b3cod4x'),
         ], 'public');
 
         $this->publishes([
-            __DIR__.'/../config/b3cod4x.php' => config_path('b3cod4x.php'),
-            __DIR__.'/../config/geoip.php' => config_path('geoip.php'),
+            __DIR__.'/config/b3cod4x.php' => config_path('b3cod4x.php'),
+            __DIR__.'/config/geoip.php' => config_path('geoip.php'),
         ]);
 
         \Gate::policy(B3Server::class, \Config::get('b3cod4x.policy'));
