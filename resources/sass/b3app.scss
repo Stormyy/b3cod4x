@@ -1,0 +1,138 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/2.8.0/css/flag-icon.min.css');
+@import "node_modules/bootstrap-sweetalert/dist/sweetalert";
+
+.tabs-component-tabs {
+  border: solid 1px #ddd;
+  border-radius:  6px;
+  list-style: none;
+  margin-bottom: 5px;
+}
+
+@media (min-width: 700px) {
+  .tabs-component-tabs {
+    border: 0;
+    align-items: stretch;
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: -1px;
+  }
+}
+
+.tabs-component-tab {
+  color: #999;
+  font-size: 14px;
+  font-weight: 600;
+  margin-right: 0;
+}
+
+.tabs-component-tab:not(:last-child) {
+  border-bottom: dotted 1px #ddd;
+}
+
+.tabs-component-tab:hover {
+  color: #666;
+}
+
+.tabs-component-tab.is-active {
+  color: #000;
+}
+
+@media (min-width: 700px) {
+  .tabs-component-tab {
+    background-color: #fff;
+    border: solid 1px #ddd;
+    border-radius: 3px 3px 0 0;
+    margin-right: .5em;
+    transform: translateY(2px);
+    transition: transform .3s ease;
+  }
+
+  .tabs-component-tab.is-active {
+    border-bottom: solid 1px #fff;
+    z-index: 2;
+    transform: translateY(0);
+  }
+}
+
+.tabs-component-tab-a {
+  align-items: center;
+  color: inherit;
+  display: flex;
+  padding: .75em 1em;
+  text-decoration: none;
+}
+
+.tabs-component-panels {
+  padding: 4em 0;
+}
+
+@media (min-width: 700px) {
+  .tabs-component-panels {
+    border-top-left-radius: 0;
+    background-color: #fff;
+    border: solid 1px #ddd;
+    border-radius: 0 6px 6px 6px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .05);
+    padding: 4em 2em;
+  }
+}
+
+/*
+CSS for image picker
+
+*/
+$thumbnail_padding:         6px;
+$thumbnail_margin:          12px;
+$thumbnail_border:          1px solid #DDD;
+$thumbnail_selected_color:  #08C;
+
+ul.thumbnails.image_picker_selector
+{
+  overflow:             auto;
+  list-style-image:     none;
+  list-style-position:  outside;
+  list-style-type:      none;
+  padding:              0px;
+  margin:               0px;
+
+  ul
+  {
+    overflow:             auto;
+    list-style-image:     none;
+    list-style-position:  outside;
+    list-style-type:      none;
+    padding:              0px;
+    margin:               0px;
+  }
+
+  li.group_title
+  {
+    float: none;
+  }
+
+  li
+  {
+    //margin:   0px $thumbnail_margin $thumbnail_margin 0px;
+    float:    left;
+    width: 50%;
+
+    .thumbnail
+    {
+      padding:  $thumbnail_padding;
+      border:   $thumbnail_border;
+      -webkit-user-select: none;
+      -moz-user-select:    none;
+      -ms-user-select:     none;
+      img
+      {
+        -webkit-user-drag: none;
+      }
+    }
+
+    .thumbnail.selected
+    {
+      background: $thumbnail_selected_color;
+    }
+  }
+}
+
