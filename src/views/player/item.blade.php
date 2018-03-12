@@ -105,8 +105,8 @@
                                 <tr>
                                     <td>{{$screenshot->name}}</td>
                                     <td>{{$screenshot->created_at->toDayDateTimeString()}}</td>
-                                    <td>{{$screenshot->server->name}}</td>
                                     <td>@if($screenshot->takenBy){{$screenshot->takenBy->name}}@endif</td>
+                                    <td>{{$screenshot->server->name}}</td>
                                     <td><a class="btn btn-primary"
                                            href="{{$screenshot->url}}"
                                            data-fancybox="gallery">View</a></td>
