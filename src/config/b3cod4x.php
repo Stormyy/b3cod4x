@@ -12,6 +12,8 @@ return [
     |
     */
 
+    'clanname' => 'LuV',
+
     'policy' => \Stormyy\B3\Policies\B3ServerPolicy::class,
 
     /**

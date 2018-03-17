@@ -24,7 +24,7 @@
                     </template>
                 </b3players>
 
-                All players noted in <font color="#ff6d6b">red</font> are currently banned in another luv server
+                All players noted in <font color="#ff6d6b">red</font> are currently banned in another {{Config::get('b3cod4x.clanname', 'LuV')}} server
             </tab>
             <tab name="Search">
                 <h3 style="margin:0">Search players</h3>
