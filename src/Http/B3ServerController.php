@@ -70,20 +70,25 @@ class B3ServerController extends Controller
 
     public function getPlayers(B3Server $server)
     {
-        return ['players' => \Cache::remember('server-'.$server->id.'-players', Carbon::now()->addSeconds(10), function() use($server) {
+        $players = \Cache::remember('server-'.$server->id.'-players', Carbon::now()->addSeconds(10), function() use($server) {
             /** @var Server $server */
             $b3database = new B3Database($server);
             $b3users = ($b3database)->getCurrentClients();
             $b3CurrentUserList = [];
             foreach ($b3users as $b3user) {
                 $b3user->screenshots = $server->screenshots()->where('guid', (int)$b3user->GUID)->orderBy('created_at', 'desc')->get();;
-                $b3user->IP = PermissionHelper::ipToFlag($b3user->IP) . " " . PermissionHelper::ip($b3user->IP);
                 $b3user->bannedOnOtherServers = $b3database->isPlayerBanned($b3user->GUID);
                 $b3CurrentUserList[] = $b3user;
             }
 
             return $b3CurrentUserList;
-        }), 'isAllowedToScreenshot' => (\Auth::check() ? \Auth::user()->can('screenshot', [$server]) : false)];
+        });
+
+        foreach($players as $player){
+            $player->IP = PermissionHelper::ipToFlag($player->IP) . " " . PermissionHelper::ip($player->IP);
+        }
+
+        return ['players' => $players, 'isAllowedToScreenshot' => (\Auth::check() ? \Auth::user()->can('screenshot', [$server]) : false)];
     }
 
     private function parseFileNameToUser($filename){
