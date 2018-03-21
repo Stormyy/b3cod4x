@@ -15,6 +15,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Input;
 use q3tool;
+use Stormyy\B3\Events\PlayerHasBeenBanned;
 use Stormyy\B3\Helper\B3Database;
 use Stormyy\B3\Models\B3Server;
 use Stormyy\B3\Models\Group;
@@ -83,6 +84,8 @@ class B3PlayerController extends Controller
                 $penalty->time_expire = $expireDate->getTimestamp();
                 $penalty->save();
 
+                event(new PlayerHasBeenBanned($penalty));
+
                 $banMinutes = ($minutes > 43200 ? 43200 : $minutes);
 
                 $tool = new q3tool($server->host, $server->port, \Crypt::decrypt($server->rcon));
@@ -101,6 +104,8 @@ class B3PlayerController extends Controller
                 $penalty->time_edit = Carbon::now()->getTimestamp();
                 $penalty->time_expire = -1;
                 $penalty->save();
+
+                event(new PlayerHasBeenBanned($penalty));
 
                 $tool = new q3tool($server->host, $server->port, \Crypt::decrypt($server->rcon));
                 $response = $tool->send_rcon('banclient ' . $guid . " " . $request->get('reason'));
