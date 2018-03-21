@@ -18,7 +18,7 @@ use Illuminate\Queue\SerializesModels;
 use Stormyy\B3\Models\Penalty;
 use Stormyy\B3\Models\Screenshot;
 
-class PlayerHasBeenBanned implements ShouldBroadcast
+class PlayerHasBeenBanned
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
