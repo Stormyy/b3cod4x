@@ -108,9 +108,18 @@
             if (this.$echo.options.key !== "") {
                 this.$echo.channel('screenshots.' + this.serverid).listen('ScreenshotTaken', (data) => {
                     this.reloadPlayers(function (self) {
+                        let type = 'success';
                         let msg = "Screenshot of player " + data.screenshot.name + " has been uploaded";
                         if(data.takenBy !== null){
                             msg = `Screenshot of player ${data.screenshot.name} taken by ${data.takenBy.name} has been uploaded`
+                        }
+
+                        if(data.prediction != null){
+                            msg += `, StormAI predirect this screenshot as a <b>${data.prediction.label}</b> with a accuracy of <b>${parseFloat(data.prediction.score)* 100}%</b> `;
+
+                            if(data.prediction.label === 'Cheat'){
+                                type = 'warning';
+                            }
                         }
 
                         self.$root.$refs.toastr.Add({
@@ -120,7 +129,7 @@
                             closeOnHover: true,
                             timeout: 5 * 60 * 1000, // Remember defaultTimeout is 5 sec..
                             position: "toast-top-full-width", // Toast Position.
-                            type: "success" // Toast type
+                            type: type // Toast type
                         });
                     })
                 });
