@@ -15,6 +15,7 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Stormyy\B3\Helper\ScreenshotHelper;
 use Stormyy\B3\Models\Screenshot;
 
 class ScreenshotTaken implements ShouldBroadcast
@@ -23,6 +24,7 @@ class ScreenshotTaken implements ShouldBroadcast
 
     public $screenshot;
     public $takenBy;
+    public $prediction;
 
     /**
      * Create a new event instance.
@@ -32,12 +34,15 @@ class ScreenshotTaken implements ShouldBroadcast
     public function __construct(Screenshot $screenshot)
     {
         $this->screenshot = $screenshot;
+
         if ($screenshot->takenBy) {
             $this->takenBy = [
                 'name' => $screenshot->takenBy->name,
                 'id' => $screenshot->takenBy->id
             ];
         }
+
+        $this->prediction = ScreenshotHelper::predict($screenshot);
     }
 
     /**
