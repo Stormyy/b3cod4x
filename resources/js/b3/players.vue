@@ -115,7 +115,7 @@
                         }
 
                         if(data.prediction != null){
-                            msg += `, StormAI predirect this screenshot as a <b>${data.prediction.label}</b> with a accuracy of <b>${parseFloat(data.prediction.score)* 100}%</b> `;
+                            msg += `, StormAI predicted this screenshot to be <b>${data.prediction.label}</b> with a accuracy of <b>${(parseFloat(data.prediction.score)* 100).toFixed(2)}%</b> `;
 
                             if(data.prediction.label === 'Cheat'){
                                 type = 'warning';
