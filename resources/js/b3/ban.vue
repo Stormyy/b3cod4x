@@ -31,7 +31,7 @@
             <vue-select-image :dataImages="screenshotsPicker" @onselectimage="changedProof">
             </vue-select-image>
 
-            <div class="form-group">
+            <div class="form-group" v-show="canBanWithoutProof === true">
                 <label for="noProof">
                     <input type="checkbox" id="noProof" v-model="noProof" :value="true">
                     I have no proof but i checked the player {{player.name}} throughly enough that im sure that he or she should not be on this server
@@ -64,6 +64,7 @@
         props: {
             player: {required: true},
             serverid: {required: true},
+            canBanWithoutProof: {required: true},
             screenshots: {required: false}
         },
         methods: {

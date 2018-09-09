@@ -76,6 +76,15 @@ class B3ServerPolicy implements B3ServerPolicyInterface
         if(!$this->myplayer){
             return false;
         }
+        return $this->myplayer->group_bits >= \Config::get('b3cod4x.permissions.ban', 16) && $this->myplayer->group_bits > $player->group_bits;
+    }
+
+    public function banWithoutProof(User $user, B3Server $b3Server, Player $player)
+    {
+        $this->getPlayer($b3Server);
+        if(!$this->myplayer){
+            return false;
+        }
         return $this->myplayer->group_bits >= \Config::get('b3cod4x.permissions.ban', 32) && $this->myplayer->group_bits > $player->group_bits;
     }
 
