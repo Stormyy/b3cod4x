@@ -85,7 +85,7 @@ class B3ServerPolicy implements B3ServerPolicyInterface
         if(!$this->myplayer){
             return false;
         }
-        return $this->myplayer->group_bits >= \Config::get('b3cod4x.permissions.ban', 32) && $this->myplayer->group_bits > $player->group_bits;
+        return $this->myplayer->group_bits >= \Config::get('b3cod4x.permissions.banWithoutProof', 32) && $this->myplayer->group_bits > $player->group_bits;
     }
 
     public function chat(User $user, B3Server $b3Server)
