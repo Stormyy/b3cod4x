@@ -43,7 +43,7 @@
                             @endcan
                             <div class="col-sm-1 pull-right">
                                 @can('ban', [$server, $player])
-                                    <b3ban :player="{{$player}}" serverid="{{$server->id}}" :screenshots="{{$screenshots}}" :canBanWithoutProof="{{ Auth::user()->can('banWithoutProof', [$server, $player]) }}"></b3ban>
+                                    <b3ban :player="{{$player}}" serverid="{{$server->id}}" :screenshots="{{$screenshots}}" :canBanWithoutProof="{{ Auth::user()->can('banWithoutProof', [$server, $player]) === true  ? 'true' : 'false'}}"></b3ban>
                                 @endcan
                             </div>
                         </div>

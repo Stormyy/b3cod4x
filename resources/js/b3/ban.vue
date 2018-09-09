@@ -97,6 +97,7 @@
             }
         },
         mounted(){
+            console.log(this.canBanWithoutProof);
             this.screenshots.forEach(screenshot => {
                 this.screenshotsPicker.push({
                     id: screenshot.id,
