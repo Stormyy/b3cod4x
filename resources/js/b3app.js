@@ -4,6 +4,7 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 require('../../node_modules/bootstrap-sweetalert/dist/sweetalert.min');
+require('vue-select-image/dist/vue-select-image.css');
 
 window.Vue = require('vue');
 
