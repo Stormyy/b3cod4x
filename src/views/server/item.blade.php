@@ -43,16 +43,25 @@
                         <th>Group</th>
                         <th>Playername</th>
                         <th>Guid</th>
+                        @can('screenshot', [$server])
+                            <th>Claimed</th>
+                        @endcan
                         <th>Bans</th>
                     </tr>
                     </thead>
                     <tbody>
+                    @php
+                        $modelName = \Config::get('b3cod4x.usermodel');
+                    @endphp
                     @foreach($admins as $admin)
                         <tr>
                             <td>{{$admin->id}}</td>
                             <td>{{$admin->group->name}}</td>
                             <td>{{$admin->name}}</td>
                             <td><a href="{{url('/b3/'.$server->id.'/player/'.$admin->guid)}}">{{$admin->guid}}</a></td>
+                            @can('screenshot', [$server])
+                                <td>{{$modelName::where('guid', $admin->guid)->count() > 0 ? 'Yes' : 'No'}}</td>
+                            @endcan
                             <td>{{$admin->adminpenalties()->whereIn('type', ['Ban', 'TempBan'])->count()}}</td>
                         </tr>
                     @endforeach
