@@ -92,13 +92,18 @@ class B3ServerController extends Controller
     }
 
     private function parseFileNameToUser($filename){
+
         $filename = substr($filename, strpos($filename, '/')+1);
         $filename = explode('-', $filename);
-        $userid = isset($filename[1]) ? $filename[1] : null;
+        $userid = isset($filename[1]) ? str_replace('.jpg', '', $filename[1]) : null;
 
         if(is_numeric($userid) && $userid !== null){
             $modelName = \Config::get('b3cod4x.usermodel');
-            return $modelName::find($userid);
+            if($filename[0] === 'user') {
+                return $modelName::find($userid);
+            } elseif($filename[0] === 'player') {
+                return $modelName::where('guid', $userid)->first();
+            }
         }
     }
 
