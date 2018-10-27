@@ -11,7 +11,7 @@
                         <h3 style="margin-top:0">
                             {{$player->name}}
                             @if(!($player->steamid === '' || $player->steamid === '0' || $player->steamid === 0))
-                                <a :href="https://steamcommunity.com/profiles/{{$player->steamid}}">
+                                <a href="https://steamcommunity.com/profiles/{{$player->steamid}}">
                                     <img src="/vendor/stormyy/b3cod4x/images/steam.png" width="20px">
                                 </a>
                             @endif

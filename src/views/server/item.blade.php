@@ -61,7 +61,7 @@
                             <td>
                                 <a href="{{url('/b3/'.$server->id.'/player/'.$admin->guid)}}">{{$admin->guid}}</a>
                                 @if(!($admin->steamid === '' || $admin->steamid === '0' || $admin->steamid === 0))
-                                    <a :href="https://steamcommunity.com/profiles/{{$admin->steamid}}">
+                                    <a href="https://steamcommunity.com/profiles/{{$admin->steamid}}">
                                         <img src="/vendor/stormyy/b3cod4x/images/steam.png" width="20px">
                                     </a>
                                 @endif
