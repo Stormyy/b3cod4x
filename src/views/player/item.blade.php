@@ -38,14 +38,12 @@
                         <div class="row">
                             @can('setrank', [$server, $player])
                                 <div class="col-sm-4">
-                                    <b3setrank :player="{{$player}}" serverid="{{$server->id}}"></b3setrank>
+                                    <b3setrank :player="{{$player}}"  serverid="{{$server->id}}"></b3setrank>
                                 </div>
                             @endcan
                             <div class="col-sm-1 pull-right">
                                 @can('ban', [$server, $player])
-                                    <b3ban :player="{{$player}}" serverid="{{$server->id}}"
-                                           :screenshots="{{$screenshots}}"
-                                           :canBanWithoutProof="{{ Auth::user()->can('banWithoutProof', [$server, $player]) === true  ? 'true' : 'false'}}"></b3ban>
+                                    <b3ban :player="{{$player}}" serverid="{{$server->id}}" :screenshots="{{$screenshots}}" :canBanWithoutProof="{{ Auth::user()->can('banWithoutProof', [$server, $player]) === true  ? 'true' : 'false'}}"></b3ban>
                                 @endcan
                             </div>
                         </div>
@@ -103,7 +101,8 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach($player->sessions()->orderBy('came', 'desc')->paginate(10, ['*'], 'sessions_page') as $session)
+                            @php $sessions = $player->sessions()->orderBy('came', 'desc')->paginate(5, ['*'], 'sessions_page'); @endphp
+                            @foreach($sessions as $session)
                                 <tr>
                                     <td>{{\Carbon\Carbon::createFromTimestampUTC($session->came)->toDayDateTimeString()}}</td>
                                     <td>{{\Carbon\Carbon::createFromTimestampUTC($session->gone)->toDayDateTimeString()}}</td>
@@ -112,6 +111,7 @@
                             @endforeach
                             </tbody>
                         </table>
+                        {{ $sessions->fragment('sessions')->links() }}
                     </div>
                 </div>
                 <div class="panel panel-primary">
@@ -141,6 +141,7 @@
                             @endforeach
                             </tbody>
                         </table>
+                        {{ $screenshots->fragment('screenshots')->links() }}
                     </div>
                 </div>
                 <div class="panel panel-primary">

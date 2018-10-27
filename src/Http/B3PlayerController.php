@@ -30,7 +30,7 @@ class B3PlayerController extends Controller
         $b3database= (new B3Database($server));
         $player = $b3database->getUser($guid);
         \View::share('myplayer', $b3database->getMyPlayer());
-        $screenshots = $player->screenshots()->orderBy('created_at', 'desc')->paginate(10, ['*'], 'screenshots_page');
+        $screenshots = $player->screenshots()->orderBy('created_at', 'desc')->paginate(5, ['*'], 'screenshots_page');
         return view('b3::player.item')->with(['player' => $player, 'server' => $server, 'otherServers' => $b3database->getAllProfiles($guid), 'screenshots' => $screenshots]);
      }
 
