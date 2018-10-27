@@ -9,7 +9,12 @@
             <tr v-for="player in players" :style="cssClass(player)">
                 <td>{{player.DBID}}</td>
                 <td v-text="player.Name"></td>
-                <td><span v-if="hasSteam(player)"><a :href="getSteamUrl(player)"><img src="/vendor/stormyy/b3cod4x/images/steam.png" width="20px"></a></span><a :href="'/b3/'+serverid+'/player/'+player.GUID">{{player.GUID}}</a></td>
+                <td>
+                    <a :href="'/b3/'+serverid+'/player/'+player.GUID">{{player.GUID}}</a>
+                    <template v-if="hasSteam(player)">
+                        <a :href="getSteamUrl(player)"><img src="/vendor/stormyy/b3cod4x/images/steam.png" width="20px"></a>
+                    </template>
+                </td>
                 <td v-html="player.IP"></td>
                 <td>{{player.screenshots.length}}</td>
                 <td v-html="latestScreenshot(player)"></td>
