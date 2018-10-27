@@ -52,4 +52,8 @@ class Player extends Model
     public function marks(){
         return $this->hasMany(Mark::class, 'guid')->orderBy('created_at', 'desc');
     }
+
+    public function sessions(){
+        return $this->hasMany(Session::class, 'guid');
+    }
 }

@@ -87,6 +87,34 @@
                         </div>
                     </div>
                 @endif
+                @if($sessions->count())
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            Past play sessions
+                        </div>
+                        <div class="panel-body">
+                            This player is active on the following servers:<br>
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Start</th>
+                                    <th>End</th>
+                                    <th>Nickname</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                @foreach($sessions as $session)
+                                    <tr>
+                                        <td>{{\Carbon\Carbon::createFromTimestampUTC($session->came)->toDayDateTimeString()}}</td>
+                                        <td>{{\Carbon\Carbon::createFromTimestampUTC($session->gone)->toDayDateTimeString()}}</td>\
+                                        <td>{{$session->nick}}</td>
+                                    </tr>
+                                @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                @endif
                 <div class="panel panel-primary">
                     <div class="panel-heading">Screenshots</div>
                     <div class="panel-body">

@@ -30,7 +30,7 @@ class B3PlayerController extends Controller
         $b3database= (new B3Database($server));
         $player = $b3database->getUser($guid);
         \View::share('myplayer', $b3database->getMyPlayer());
-        return view('b3::player.item')->with(['player' => $player, 'server' => $server, 'otherServers' => $b3database->getAllProfiles($guid), 'screenshots' => $player->screenshots()->orderBy('created_at', 'desc')->get()]);
+        return view('b3::player.item')->with(['player' => $player, 'server' => $server, 'otherServers' => $b3database->getAllProfiles($guid), 'screenshots' => $player->screenshots()->orderBy('created_at', 'desc')->get(), 'sessions' => $player->sessions]);
     }
 
     public function postBan(B3Server $server, $guid, Request $request)
