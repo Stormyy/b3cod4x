@@ -38,12 +38,14 @@
                         <div class="row">
                             @can('setrank', [$server, $player])
                                 <div class="col-sm-4">
-                                    <b3setrank :player="{{$player}}"  serverid="{{$server->id}}"></b3setrank>
+                                    <b3setrank :player="{{$player}}" serverid="{{$server->id}}"></b3setrank>
                                 </div>
                             @endcan
                             <div class="col-sm-1 pull-right">
                                 @can('ban', [$server, $player])
-                                    <b3ban :player="{{$player}}" serverid="{{$server->id}}" :screenshots="{{$screenshots}}" :canBanWithoutProof="{{ Auth::user()->can('banWithoutProof', [$server, $player]) === true  ? 'true' : 'false'}}"></b3ban>
+                                    <b3ban :player="{{$player}}" serverid="{{$server->id}}"
+                                           :screenshots="{{$screenshots}}"
+                                           :canBanWithoutProof="{{ Auth::user()->can('banWithoutProof', [$server, $player]) === true  ? 'true' : 'false'}}"></b3ban>
                                 @endcan
                             </div>
                         </div>
@@ -87,33 +89,31 @@
                         </div>
                     </div>
                 @endif
-                @if($sessions->count())
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            Past play sessions
-                        </div>
-                        <div class="panel-body">
-                            <table class="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th>Start</th>
-                                    <th>End</th>
-                                    <th>Nickname</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($sessions as $session)
-                                    <tr>
-                                        <td>{{\Carbon\Carbon::createFromTimestampUTC($session->came)->toDayDateTimeString()}}</td>
-                                        <td>{{\Carbon\Carbon::createFromTimestampUTC($session->gone)->toDayDateTimeString()}}</td>
-                                        <td>{{$session->nick}}</td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        Past play sessions
                     </div>
-                @endif
+                    <div class="panel-body">
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Start</th>
+                                <th>End</th>
+                                <th>Nickname</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($player->sessions()->orderBy('came', 'desc')->paginate(10, ['*'], 'sessions_page') as $session)
+                                <tr>
+                                    <td>{{\Carbon\Carbon::createFromTimestampUTC($session->came)->toDayDateTimeString()}}</td>
+                                    <td>{{\Carbon\Carbon::createFromTimestampUTC($session->gone)->toDayDateTimeString()}}</td>
+                                    <td>{{$session->nick}}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
                 <div class="panel panel-primary">
                     <div class="panel-heading">Screenshots</div>
                     <div class="panel-body">
