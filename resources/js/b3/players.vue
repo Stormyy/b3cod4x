@@ -9,7 +9,7 @@
             <tr v-for="player in players" :style="cssClass(player)">
                 <td>{{player.DBID}}</td>
                 <td v-text="player.Name"></td>
-                <td><a :href="'/b3/'+serverid+'/player/'+player.GUID">{{player.GUID}}</a></td>
+                <td><a :href="'/b3/'+serverid+'/player/'+player.GUID"><span v-if="player.steamid !== ''"><<img src="/vendor/stormyy/b3cod4x/steam.png"></span>{{player.GUID}}</a></td>
                 <td v-html="player.IP"></td>
                 <td>{{player.screenshots.length}}</td>
                 <td v-html="latestScreenshot(player)"></td>

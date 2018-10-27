@@ -43,7 +43,7 @@
                             @endcan
                             <div class="col-sm-1 pull-right">
                                 @can('ban', [$server, $player])
-                                    <b3ban :player="{{$player}}" serverid="{{$server->id}}" :screenshots="{{$screenshots}}" :canBanWithoutProof="{{ Auth::user()->can('banWithoutProof', [$server, $player]) === true  ? 'true' : 'false'}}"></b3ban>
+                                    <b3ban :player="{{$player}}" serverid="{{$server->id}}" :screenshots="{{$allScreenshots}}" :canBanWithoutProof="{{ Auth::user()->can('banWithoutProof', [$server, $player]) === true  ? 'true' : 'false'}}"></b3ban>
                                 @endcan
                             </div>
                         </div>
@@ -128,6 +128,7 @@
                             </tr>
                             </thead>
                             <tbody>
+                            @php $screenshots = $player->screenshots()->orderBy('created_at', 'desc')->paginate(5, ['*'], 'screenshots_page'); @endphp
                             @foreach($screenshots as $screenshot)
                                 <tr>
                                     <td>{{$screenshot->name}}</td>
