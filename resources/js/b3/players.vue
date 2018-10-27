@@ -9,7 +9,7 @@
             <tr v-for="player in players" :style="cssClass(player)">
                 <td>{{player.DBID}}</td>
                 <td v-text="player.Name"></td>
-                <td><a :href="'/b3/'+serverid+'/player/'+player.GUID"><span v-if="player.steamid !== ''"><<img src="/vendor/stormyy/b3cod4x/steam.png"></span>{{player.GUID}}</a></td>
+                <td><span v-if="hasSteam(player)"><a :href="getSteamUrl(player)"><img src="/vendor/stormyy/b3cod4x/images/steam.png" width="20px"></a></span><a :href="'/b3/'+serverid+'/player/'+player.GUID">{{player.GUID}}</a></td>
                 <td v-html="player.IP"></td>
                 <td>{{player.screenshots.length}}</td>
                 <td v-html="latestScreenshot(player)"></td>
@@ -91,6 +91,12 @@
                     return 'background-color:#ff6d6b; color:white;'
                 }
                 return '';
+            },
+            hasSteam(player){
+            	return !(player.steamid === '' || player.steamid === 0 || player.steamid === '0');
+            },
+            getSteamUrl(player){
+            	return 'https://steamcommunity.com/profiles/'+player.steamid;
             }
         },
         created(){
