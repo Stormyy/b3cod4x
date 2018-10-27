@@ -8,7 +8,14 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">Player info</div>
                     <div class="panel-body">
-                        <h3 style="margin-top:0">{{$player->name}}</h3>
+                        <h3 style="margin-top:0">
+                            {{$player->name}}
+                            @if(!($player->steamid === '' || $player->steamid === '0' || $player->steamid === 0))
+                                <a :href="https://steamcommunity.com/profiles/{{$player->steamid}}">
+                                    <img src="/vendor/stormyy/b3cod4x/images/steam.png" width="20px">
+                                </a>
+                            @endif
+                        </h3>
                         <table class="table table-striped">
                             <tr>
                                 <td class="heading">Name</td>
@@ -38,12 +45,14 @@
                         <div class="row">
                             @can('setrank', [$server, $player])
                                 <div class="col-sm-4">
-                                    <b3setrank :player="{{$player}}"  serverid="{{$server->id}}"></b3setrank>
+                                    <b3setrank :player="{{$player}}" serverid="{{$server->id}}"></b3setrank>
                                 </div>
                             @endcan
                             <div class="col-sm-1 pull-right">
                                 @can('ban', [$server, $player])
-                                    <b3ban :player="{{$player}}" serverid="{{$server->id}}" :screenshots="{{$allScreenshots}}" :canBanWithoutProof="{{ Auth::user()->can('banWithoutProof', [$server, $player]) === true  ? 'true' : 'false'}}"></b3ban>
+                                    <b3ban :player="{{$player}}" serverid="{{$server->id}}"
+                                           :screenshots="{{$allScreenshots}}"
+                                           :canBanWithoutProof="{{ Auth::user()->can('banWithoutProof', [$server, $player]) === true  ? 'true' : 'false'}}"></b3ban>
                                 @endcan
                             </div>
                         </div>

@@ -58,7 +58,14 @@
                             <td>{{$admin->id}}</td>
                             <td>{{$admin->group->name}}</td>
                             <td>{{$admin->name}}</td>
-                            <td><a href="{{url('/b3/'.$server->id.'/player/'.$admin->guid)}}">{{$admin->guid}}</a></td>
+                            <td>
+                                <a href="{{url('/b3/'.$server->id.'/player/'.$admin->guid)}}">{{$admin->guid}}</a>
+                                @if(!($admin->steamid === '' || $admin->steamid === '0' || $admin->steamid === 0))
+                                    <a :href="https://steamcommunity.com/profiles/{{$admin->steamid}}">
+                                        <img src="/vendor/stormyy/b3cod4x/images/steam.png" width="20px">
+                                    </a>
+                                @endif
+                            </td>
                             @can('screenshot', [$server])
                                 <td>{{$modelName::where('guid', $admin->guid)->count() > 0 ? 'Yes' : 'No'}}</td>
                             @endcan
