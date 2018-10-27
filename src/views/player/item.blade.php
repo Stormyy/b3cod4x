@@ -93,7 +93,6 @@
                             Past play sessions
                         </div>
                         <div class="panel-body">
-                            This player is active on the following servers:<br>
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
@@ -106,7 +105,7 @@
                                 @foreach($sessions as $session)
                                     <tr>
                                         <td>{{\Carbon\Carbon::createFromTimestampUTC($session->came)->toDayDateTimeString()}}</td>
-                                        <td>{{\Carbon\Carbon::createFromTimestampUTC($session->gone)->toDayDateTimeString()}}</td>\
+                                        <td>{{\Carbon\Carbon::createFromTimestampUTC($session->gone)->toDayDateTimeString()}}</td>
                                         <td>{{$session->nick}}</td>
                                     </tr>
                                 @endforeach

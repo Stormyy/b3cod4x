@@ -54,6 +54,6 @@ class Player extends Model
     }
 
     public function sessions(){
-        return $this->hasMany(Session::class, 'guid');
+        return $this->hasMany(Session::class, 'guid', 'guid');
     }
 }
