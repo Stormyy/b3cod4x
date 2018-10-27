@@ -23,7 +23,12 @@
             <tr v-for="player in players">
                 <td>{{player.id}}</td>
                 <td v-text="player.name"></td>
-                <td><a :href="'/b3/'+serverid+'/player/'+player.guid">{{player.guid}}</a></td>
+                <td>
+                    <a :href="'/b3/'+serverid+'/player/'+player.guid">{{player.guid}}</a>
+                    <template v-if="hasSteam(player)">
+                        <a :href="getSteamUrl(player)"><img src="/vendor/stormyy/b3cod4x/images/steam.png" width="20px"></a>
+                    </template>
+                </td>
                 <td v-html="player.ip"></td>
                 <td>{{player.connections}}</td>
                 <td>{{player.lastseen}}</td>
@@ -34,29 +39,35 @@
 </template>
 
 <script>
-    export default {
-        data(){
-            return {
-                query: "",
-                players: []
-            }
-        },
-        props: {
-            serverid: {required: true}
-        },
-        watch: {
-            query: function (value) {
-                axios.get('/b3/' + this.serverid + '/search/' + this.query).then((response) => {
-                    this.players = response.data;
-                })
-            }
-        },
-        methods: {
-            search(){
-                axios.get('/b3/' + this.serverid + '/search/' + this.query).then((response) => {
-                    this.players = response.data;
-                })
-            }
-        }
-    }
+	export default {
+		data() {
+			return {
+				query: "",
+				players: []
+			}
+		},
+		props: {
+			serverid: {required: true}
+		},
+		watch: {
+			query: function(value) {
+				axios.get('/b3/' + this.serverid + '/search/' + this.query).then((response) => {
+					this.players = response.data;
+				})
+			}
+		},
+		methods: {
+			search() {
+				axios.get('/b3/' + this.serverid + '/search/' + this.query).then((response) => {
+					this.players = response.data;
+				})
+			},
+			hasSteam(player){
+				return !(player.steamid === '' || player.steamid === 0 || player.steamid === '0');
+			},
+			getSteamUrl(player){
+				return 'https://steamcommunity.com/profiles/'+player.steamid;
+			}
+		}
+	}
 </script>
