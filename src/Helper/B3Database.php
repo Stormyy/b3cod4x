@@ -60,7 +60,7 @@ class B3Database
         $ids = [];
         $players = [];
 
-        $otherPlayers = Player::whereNotIn ('id', $ids)->where('name', 'like', '%'.$query.'%')->orWhere('guid', 'like', '%'.$query.'%')->orWhere('ip', 'like', '%'.$query.'%')->orderBy('connections', 'desc')->orderBy('time_edit', 'desc')->orderBy('time_edit', 'desc')->limit(10-count($players))->get();
+        $otherPlayers = Player::whereNotIn ('id', $ids)->where('name', 'like', '%'.$query.'%')->orWhere('guid', 'like', '%'.$query.'%')->orWhere('ip', 'like', '%'.$query.'%')->orderBy('time_edit', 'desc')->orderBy('connections', 'desc')->limit(10-count($players))->get();
         foreach($otherPlayers as $player){
             $player = $this->parsePlayer($player);
             if(!isset($players[$player->id])){
