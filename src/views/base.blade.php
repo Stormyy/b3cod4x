@@ -3,7 +3,7 @@
 @section('content')
     <div id="b3app">
         <div style="margin-top:100px">
-            @if(Auth::check() && Auth::user()->guid == null)
+            @if(Auth::check() && (Auth::user()->guid === null) && Auth::user()->steamid === null)
                 <div class="container">
                     <div class="panel panel-danger">
                         <div class="panel-heading">Claimed player</div>

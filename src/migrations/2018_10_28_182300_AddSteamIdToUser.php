@@ -15,6 +15,8 @@ class AddSteamIdToUser extends Migration
     {
         \Schema::table(Config::get('b3cod4x.usertable'), function (Blueprint $table){
             $table->string('steamid')->nullable();
+            $table->string('email')->nullable()->change();
+            $table->string('password')->nullable()->change();
         });
 
     }
@@ -28,6 +30,8 @@ class AddSteamIdToUser extends Migration
     {
         \Schema::table(Config::get('b3cod4x.usertable'), function (Blueprint $table){
             $table->dropColumn('steamid');
+            $table->string('email')->nullable(false)->change();
+            $table->string('password')->nullable(false)->change();
         });
 
     }
