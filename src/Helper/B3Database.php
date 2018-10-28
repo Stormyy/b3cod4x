@@ -100,13 +100,24 @@ class B3Database
 
     public function getMyPlayer(){
         $user = \Auth::user();
-        if($user != null && $user->steamid != null){
-            return Player::where('steamid', $user->steamid)->orderBy('group_bits', 'desc')->first();
+        $player = null;
+
+        if($user != null) {
+            if($user->steamid !== null) {
+                $player = Player::where('steamid', $user->steamid);
+            }
+
+            if($user->guid !== null) {
+                $method = $player === null ? 'where' : 'orWhere';
+
+                $player = $player->$method('guid', $user->guid);
+            }
+
+            return $player->orderBy('group_bits', 'desc')->first();
         }
-        if($user != null && $user->guid != null){
-            return Player::where('guid', $user->guid)->first();
-        }
+
         return null;
+
     }
 
     public function getAllProfiles($guid){

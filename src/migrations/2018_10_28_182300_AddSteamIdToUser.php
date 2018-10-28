@@ -14,7 +14,7 @@ class AddSteamIdToUser extends Migration
     public function up()
     {
         \Schema::table(Config::get('b3cod4x.usertable'), function (Blueprint $table){
-            $table->string('steamid')->nullable();
+            $table->string('steamid')->unique()->nullable();
             $table->string('email')->nullable()->change();
             $table->string('password')->nullable()->change();
         });
