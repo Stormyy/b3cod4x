@@ -67,7 +67,7 @@
                                 @endif
                             </td>
                             @can('screenshot', [$server])
-                                <td>{{$modelName::where('guid', $admin->guid)->count() > 0 ? 'Yes' : 'No'}}</td>
+                                <td>{{$modelName::where('guid', $admin->guid)->orWhere('steamid', $admin->steamid)->count() > 0 ? 'Yes' : 'No'}}</td>
                             @endcan
                             <td>{{$admin->adminpenalties()->whereIn('type', ['Ban', 'TempBan'])->count()}}</td>
                         </tr>
