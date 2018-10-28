@@ -98,22 +98,15 @@ class B3Database
 
     }
 
-    public function getMyPlayer(){
+    public function getMyPlayer()
+    {
         $user = \Auth::user();
-        $player = null;
 
-        if($user != null) {
-            if($user->steamid !== null) {
-                $player = Player::where('steamid', $user->steamid);
-            }
+        if ($user != null) {
+            return Player::where('steamid', $user->steamid)
+                ->orWhere('guid', $user->guid)
+                ->orderBy('group_bits', 'desc')->first();
 
-            if($user->guid !== null) {
-                $method = $player === null ? 'where' : 'orWhere';
-
-                $player = $player->$method('guid', $user->guid);
-            }
-
-            return $player->orderBy('group_bits', 'desc')->first();
         }
 
         return null;
