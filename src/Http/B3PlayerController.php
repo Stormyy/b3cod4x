@@ -164,8 +164,9 @@ class B3PlayerController extends Controller
     }
 
     public function getProfile(){
+        $user = \Auth::user();
         $b3database = new B3Database(B3Server::first());
-        return view('b3::profile')->with(['playsOnServers' => $b3database->getAllProfiles(\Auth::user()->guid)]);
+        return view('b3::profile')->with(['playsOnServers' => $b3database->getAllProfiles($user->guid, $user->steamid)]);
     }
 
     public function getClaim()

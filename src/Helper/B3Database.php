@@ -120,13 +120,17 @@ class B3Database
 
     }
 
-    public function getAllProfiles($guid){
+    public function getAllProfiles($guid, $steamid=null){
         $b3servers = B3Server::get();
         $servers = [];
         foreach($b3servers as $b3server){
             \Config::set('database.connections.b3-'.$b3server->id, json_decode(\Crypt::decrypt(($b3server->dbSettings)), true));
             $player = new Player();
-            $player = $player->setConnection('b3-'.$b3server->id)->where('guid', $guid)->with('group')->first();
+            $player = $player->setConnection('b3-'.$b3server->id)->where('guid', $guid);
+            if($steamid !== null){
+                $player = $player->orWhere('steamid', null);
+            }
+            $player = $player->with('group')->first();
 
 
 
