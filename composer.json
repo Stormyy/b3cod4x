@@ -8,8 +8,8 @@
     "stormyy/q3tool": "^0.2.1",
     "torann/geoip": "^1.0",
     "php": ">=7.0",
-    "illuminate/support": "~5.4",
-    "illuminate/console": "~5.4",
+    "illuminate/support": "~5.7",
+    "illuminate/console": "~5.7",
     "doctrine/dbal": "^2.5"
   },
   "autoload": {
@@ -22,5 +22,8 @@
     "prefer-stable": true,
     "sort-packages": true,
     "optimize-autoloader": true
+  },
+  "require-dev": {
+    "laravel/framework": "^5.7"
   }
 }

@@ -100,6 +100,9 @@ class B3Database
 
     public function getMyPlayer(){
         $user = \Auth::user();
+        if($user != null && $user->steamid != null){
+            return Player::where('steamid', $user->steamid)->orderBy('group_bits', 'desc')->first();
+        }
         if($user != null && $user->guid != null){
             return Player::where('guid', $user->guid)->first();
         }
