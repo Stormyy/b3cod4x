@@ -61,7 +61,7 @@ class B3Database
         $players = [];
         $maxCount = 30;
 
-        if(strtolower($query) === 'steam'){
+        if(strtolower($query) === '!steam'){;
             $steamPlayers = Player::whereNotNull('steamid')->where('steamid', '!=', '')->where('steamid', '!=', '0')->get();
             foreach($steamPlayers as $player){
                 $player = $this->parsePlayer($player);
@@ -70,7 +70,6 @@ class B3Database
                     $ids[] = $player->id;
                 }
             }
-
             return $players;
         }
 
