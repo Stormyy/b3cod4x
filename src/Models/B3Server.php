@@ -16,6 +16,7 @@ class B3Server extends Model
 {
     protected $table = 'b3servers';
     protected $casts = [];
+    protected $hidden = ['rcon', 'dbSettings', 'identifier'];
 
     public function screenshots(){
         return $this->hasMany(Screenshot::class, 'server_id');

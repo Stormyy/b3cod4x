@@ -66,7 +66,12 @@ module.exports = {
             {
                 test: /\.js$/,
                 loader: 'babel-loader',
-                exclude: /node_modules/
+	            options: {
+                    plugins: [
+                        'transform-class-properties'
+                    ]
+                },
+	            exclude: /node_modules/
             },
             {
                 test: /\.(png|jpg|gif|svg)$/,

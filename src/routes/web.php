@@ -4,10 +4,14 @@ use Stormyy\B3\Models\B3Server;
 Route::model('b3server', B3Server::class);
 Route::group(['namespace' => 'Stormyy\B3\Http'], function () {
     Route::group(['middleware' => ['web']], function () {
-        Route::get('/b3', 'B3ServerController@getList');
-        Route::get('/b3/{b3server}/players', 'B3ServerController@get');
+        Route::get('/b3/list', 'B3ServerController@getList');
+        Route::get('/b3/{b3server}', 'B3ServerController@get');
         Route::get('/b3/{b3server}/player/{playerid}', 'B3PlayerController@get');
         Route::get('/b3/{b3server}/player', 'B3ServerController@getPlayers');
+        Route::get('/b3/{b3server}/admins', 'B3ServerController@getAdmins');
+        Route::get('/b3/{b3server}/bans', 'B3ServerController@getActiveBans');
+        Route::get('/b3/{b3server}/permissions', 'B3ServerController@getPermissions');
+        Route::get('/b3/{b3server}/penalty/{penaltyid}/screenshot', 'B3ServerController@getScreenshotByPenalty');
 
         Route::group(['middleware' => 'auth'], function () {
             Route::group(['middleware' => ['can:manage,'.B3Server::class]], function(){

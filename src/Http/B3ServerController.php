@@ -31,29 +31,34 @@ use Illuminate\Support\Facades\Input;
 
 class B3ServerController extends Controller
 {
-    public function getList()
+    public function getListView()
     {
+        $b3servers = $this->getList();
+        return view('b3::server.list')->with(['servers' => $b3servers]);
+    }
+
+    public function getList(){
         $b3servers = B3Server::get();
-        if($b3servers->count() > 0){
-			$b3database = new B3Database($b3servers->first());
-		}
-        
-        foreach($b3servers as $b3server){
+        if ($b3servers->count() > 0) {
+            $b3database = new B3Database($b3servers->first());
+        }
+
+        foreach ($b3servers as $b3server) {
             try {
                 $b3server->online = $b3database->getActiveCurrentClients($b3server);
                 $b3server->slots = \Cache::remember('b3server-' . $b3server . '-slots', 60, function () use ($b3server, $b3database) {
                     return $b3database->getMaxSlots($b3server);
                 });
-            } catch (\Exception $ex){
+            } catch (\Exception $ex) {
                 $b3server->online = -1;
                 $b3server->slots = -1;
             }
         }
 
-        return view('b3::server.list')->with(['servers' => $b3servers]);
+        return $b3servers;
     }
 
-    public function get(B3Server $server)
+    public function getView(B3Server $server)
     {
         /** @var Server $server */
         $b3database = (new B3Database($server));
@@ -66,6 +71,31 @@ class B3ServerController extends Controller
 
         \View::share('myplayer', $b3database->getMyPlayer());
         return view('b3::server.item')->with(['server' => $server, 'admins' => $admins, 'activebans' => $activebans]);
+    }
+
+    public function get(B3Server $server){
+        return $server;
+    }
+
+    public function getActiveBans(B3Server $server){
+
+        $b3database = (new B3Database($server));
+        $activebans = Penalty::whereIn('type', ['Ban', 'TempBan'])->where('inactive', 0)->where(function($query) {
+            $query->where('time_expire', '>', Carbon::now()->getTimestamp());
+            $query->orWhere('time_expire', '-1');
+        })->orderBy('time_add', 'desc')->with(['player', 'admin'])->paginate(30);
+
+        return $activebans;
+    }
+
+    public function getAdmins(B3Server $server){
+        $b3database = (new B3Database($server));
+        $admins = Player::where('group_bits', '>=', '8')->orderBy('group_bits', 'desc')->orderBy('id', 'asc')->with('group')->get();
+        foreach($admins as $admin){
+            $admin->totalBansGiven = $admin->adminpenalties()->whereIn('type', ['Ban', 'TempBan'])->count();
+        }
+
+        return $admins;
     }
 
     public function getPlayers(B3Server $server)
@@ -89,6 +119,24 @@ class B3ServerController extends Controller
         }
 
         return ['players' => $players, 'isAllowedToScreenshot' => (\Auth::check() ? \Auth::user()->can('screenshot', [$server]) : false)];
+    }
+
+    public function getScreenshotByPenalty(B3Server $server, $penalityId){
+        $b3database = new B3Database($server);
+        $penalty = Penalty::find($penalityId);
+        return $penalty->player->screenshots()->where('server_id', $server->id)->where('penalty_id', $penalty->id)->first();
+    }
+
+    public function getPermissions(B3Server $server)
+    {
+        $user = \Auth::user();
+
+        if ($user !== null) {
+            return [
+                'isAllowedToScreenshot' => $user->can('screenshot', [$server]),
+                'isAllowedToChat' => $user->can('chat', [$server]),
+            ];
+        }
     }
 
     private function parseFileNameToUser($filename){
