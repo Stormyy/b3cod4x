@@ -59,8 +59,9 @@ class B3Database
     {
         $ids = [];
         $players = [];
+        $maxCount = 30;
 
-        $otherPlayers = Player::whereNotIn ('id', $ids)->where('name', 'like', '%'.$query.'%')->orWhere('guid', 'like', '%'.$query.'%')->orWhere('ip', 'like', '%'.$query.'%')->orderBy('time_edit', 'desc')->orderBy('connections', 'desc')->limit(10-count($players))->get();
+        $otherPlayers = Player::whereNotIn ('id', $ids)->where('name', 'like', '%'.$query.'%')->orWhere('guid', 'like', '%'.$query.'%')->orWhere('ip', 'like', '%'.$query.'%')->orderBy('time_edit', 'desc')->orderBy('connections', 'desc')->limit($maxCount-count($players))->get();
         foreach($otherPlayers as $player){
             $player = $this->parsePlayer($player);
             if(!isset($players[$player->id])){
@@ -71,8 +72,8 @@ class B3Database
 
 
 
-        if(count($players) < 10){
-            $aliases = Alias::where('alias', 'like', '%'.$query.'%')->orderBy('num_used', 'desc')->limit(10-count($players))->with('player')->get();
+        if(count($players) < $maxCount){
+            $aliases = Alias::where('alias', 'like', '%'.$query.'%')->orderBy('num_used', 'desc')->limit($maxCount-count($players))->with('player')->get();
             foreach($aliases as $alias){
                 $player = $this->parsePlayer($alias->player);
                 if(!isset($players[$player->id])){
@@ -82,8 +83,8 @@ class B3Database
             }
         }
 
-        if(count($players) < 10){
-            $ipaliases = IpAlias::where('ip', 'like', '%'.$query.'%')->orderBy('num_used', 'desc')->limit(10-count($players))->with('player')->get();
+        if(count($players) < $maxCount){
+            $ipaliases = IpAlias::where('ip', 'like', '%'.$query.'%')->orderBy('num_used', 'desc')->limit($maxCount-count($players))->with('player')->get();
             foreach($ipaliases as $otherip){
                 $player = $this->parsePlayer($otherip->player);
                 if(!isset($players[$player->id])){
