@@ -61,6 +61,19 @@ class B3Database
         $players = [];
         $maxCount = 30;
 
+        if(strtolower($query) === 'steam'){
+            $steamPlayers = Player::whereNotNull('steamid')->where('steamid', '!=', '')->where('steamid', '!=', '0')->get();
+            foreach($steamPlayers as $player){
+                $player = $this->parsePlayer($player);
+                if(!isset($players[$player->id])){
+                    $players[$player->id] =$player;
+                    $ids[] = $player->id;
+                }
+            }
+
+            return $players;
+        }
+
         $otherPlayers = Player::whereNotIn ('id', $ids)->where('name', 'like', '%'.$query.'%')->orWhere('guid', 'like', '%'.$query.'%')->orWhere('ip', 'like', '%'.$query.'%')->orderBy('time_edit', 'desc')->orderBy('connections', 'desc')->limit($maxCount-count($players))->get();
         foreach($otherPlayers as $player){
             $player = $this->parsePlayer($player);

@@ -25,7 +25,7 @@
                     <td>
                         <a :href="'/b3/'+serverid+'/player/'+player.GUID">{{player.GUID}}</a>
                         <template v-if="hasSteam(player)">
-                            <a :href="getSteamUrl(player)"><img
+                            <a :href="getSteamUrl(player)" target="_blank"><img
                                     src="/vendor/stormyy/b3cod4x/images/steam.png" width="20px"></a>
                         </template>
                     </td>
