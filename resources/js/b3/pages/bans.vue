@@ -14,7 +14,7 @@
                 </thead>
                 <tbody>
                 <template v-for="ban in activebans.data">
-                    <tr>
+                    <tr @click="toggleBanInfo(ban)">
                         <td>{{ban.type}}</td>
                         <td><a :href="getPlayerUrl(ban.player)">{{ban.player.name}}</a></td>
                         <td>{{ban.reason}}</td>

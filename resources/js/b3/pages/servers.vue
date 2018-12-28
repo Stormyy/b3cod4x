@@ -54,7 +54,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr v-for="server in servers">
+                            <router-link tag="tr" v-for="server in servers" :to="getServerUrl(server)" >
                                 <td>{{server.name}}
                                     <a :href="'cod4://'+server.host+':'+server.port" :title="`Join ${server.name} server`">
                                         <i class="fa fa-sign-in"></i>
@@ -76,7 +76,7 @@
                                 <td style="text-align:right;">
                                     <router-link :to="getServerUrl(server)">View</router-link>
                                 </td>
-                            </tr>
+                            </router-link>
                             </tbody>
                         </table>
                     </div>
