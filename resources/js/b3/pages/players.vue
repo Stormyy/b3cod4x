@@ -133,13 +133,13 @@
 
 			if (this.$echo.options.key !== "" && this.permissions.isAllowedToScreenshot) {
 				this.$echo.channel('screenshots.' + this.serverid).listen('ScreenshotTaken', (data) => {
-					this.reloadPlayers(function(self) {
+					this.reloadPlayers(() => {
 						let msg = "Screenshot of player " + data.screenshot.name + " has been uploaded";
 						if (data.takenBy !== null) {
 							msg = `Screenshot of player ${data.screenshot.name} taken by ${data.takenBy.name} has been uploaded`
 						}
 
-						self.$root.$refs.toastr.Add({
+						this.$toastr.Add({
 							title: "Screenshot has been taken", // Toast Title
 							msg: msg, // Message
 							clickClose: true, // Click Close Disable
