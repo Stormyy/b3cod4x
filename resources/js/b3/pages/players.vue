@@ -9,28 +9,34 @@
             <table class="table table-striped jambo_table">
                 <thead>
                 <tr class="headings">
-                    <th class="column-title">Id</th>
+                    <th class="column-title visible-md visible-lg">Id</th>
                     <th>Playername</th>
-                    <th>Guid</th>
-                    <th>Ip</th>
-                    <th>Screenshots</th>
+                    <th class="visible-md visible-lg">Guid</th>
+                    <th class="visible-md visible-lg">Ip</th>
+                    <th class="visible-md visible-lg">Screenshots</th>
                     <th>Latest screenshot</th>
                     <th v-if="permissions.isAllowedToScreenshot"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr v-for="player in players" :style="cssClass(player)">
-                    <td>{{player.DBID}}</td>
-                    <td v-text="player.Name"></td>
+                    <td class="visible-md visible-lg">{{player.DBID}}</td>
                     <td>
+                        <a :href="'/b3/'+serverid+'/player/'+player.GUID">{{player.Name}}</a>
+                        <template v-if="hasSteam(player)" class="visible-sm visible-xs">
+                            <a :href="getSteamUrl(player)" target="_blank"><img
+                                    src="/vendor/stormyy/b3cod4x/images/steam.png" width="20px"></a>
+                        </template>
+                    </td>
+                    <td class="visible-md visible-lg">
                         <a :href="'/b3/'+serverid+'/player/'+player.GUID">{{player.GUID}}</a>
                         <template v-if="hasSteam(player)">
                             <a :href="getSteamUrl(player)" target="_blank"><img
                                     src="/vendor/stormyy/b3cod4x/images/steam.png" width="20px"></a>
                         </template>
                     </td>
-                    <td v-html="player.IP"></td>
-                    <td>{{player.screenshots.length}}</td>
+                    <td v-html="player.IP" class="visible-md visible-lg"></td>
+                    <td class="visible-md visible-lg">{{player.screenshots.length}}</td>
                     <td v-html="latestScreenshot(player)"></td>
                     <td v-if="permissions.isAllowedToScreenshot === true">
                         <button @click="postScreenshot(player)" class="btn btn-primary">Screenshot</button>
