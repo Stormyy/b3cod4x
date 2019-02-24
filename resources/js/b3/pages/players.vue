@@ -50,7 +50,7 @@
                     <td v-if="permissions.isAllowedToScreenshot === true">
                         <button @click="postScreenshot(player)" class="btn btn-primary">
                             <mq-layout mq="mobile">
-                                <img src="/vendor/stormyy/b3cod4x/images/screenshot.png">
+                                <img src="/vendor/stormyy/b3cod4x/images/screenshot.png" width="30px">
                             </mq-layout>
                             <mq-layout mq="tablet+">
                                 Screenshot
