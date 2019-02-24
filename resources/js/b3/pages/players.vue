@@ -14,7 +14,14 @@
                     <th class="visible-md visible-lg">Guid</th>
                     <th class="visible-md visible-lg">Ip</th>
                     <th class="visible-md visible-lg">Screenshots</th>
-                    <th>Latest screenshot</th>
+                    <th>
+                        <mq-layout mq="mobile">
+                            SS
+                        </mq-layout>
+                        <mq-layout mq="tablet+">
+                            Latest screenshot
+                        </mq-layout>
+                    </th>
                     <th v-if="permissions.isAllowedToScreenshot"></th>
                 </tr>
                 </thead>
@@ -23,10 +30,12 @@
                     <td class="visible-md visible-lg">{{player.DBID}}</td>
                     <td>
                         <a :href="'/b3/'+serverid+'/player/'+player.GUID">{{player.Name}}</a>
-                        <template v-if="hasSteam(player)" class="visible-sm visible-xs">
-                            <a :href="getSteamUrl(player)" target="_blank"><img
-                                    src="/vendor/stormyy/b3cod4x/images/steam.png" width="20px"></a>
-                        </template>
+                        <span class="visible-sm visible-xs">
+                            <template v-if="hasSteam(player)">
+                                <a :href="getSteamUrl(player)" target="_blank"><img
+                                        src="/vendor/stormyy/b3cod4x/images/steam.png" width="20px"></a>
+                            </template>
+                        </span>
                     </td>
                     <td class="visible-md visible-lg">
                         <a :href="'/b3/'+serverid+'/player/'+player.GUID">{{player.GUID}}</a>
@@ -39,7 +48,14 @@
                     <td class="visible-md visible-lg">{{player.screenshots.length}}</td>
                     <td v-html="latestScreenshot(player)"></td>
                     <td v-if="permissions.isAllowedToScreenshot === true">
-                        <button @click="postScreenshot(player)" class="btn btn-primary">Screenshot</button>
+                        <button @click="postScreenshot(player)" class="btn btn-primary">
+                            <mq-layout mq="mobile">
+                                <img src="/vendor/stormyy/b3cod4x/images/screenshot.png">
+                            </mq-layout>
+                            <mq-layout mq="tablet+">
+                                Screenshot
+                            </mq-layout>
+                        </button>
                     </td>
                 </tr>
                 </tbody>

@@ -19,6 +19,7 @@
     "moment-timezone": "^0.5.14",
     "vue": "^2.5.17",
     "vue-echo": "^1.0.1",
+    "vue-mq": "^1.0.1",
     "vue-select-image": "^1.7.0",
     "vue-strap": "github:wffranco/vue-strap",
     "vue-tabs-component": "^1.4.0",
