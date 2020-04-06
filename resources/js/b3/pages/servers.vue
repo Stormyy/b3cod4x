@@ -54,7 +54,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
+                            <tr v-for="server in servers">
                                 <td>{{server.name}}
                                     <a :href="'cod4://'+server.host+':'+server.port" :title="`Join ${server.name} server`">
                                         <i class="fa fa-sign-in"></i>
