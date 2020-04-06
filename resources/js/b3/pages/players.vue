@@ -1,7 +1,7 @@
 <template>
     <b3serverPage id="b3players" title="Current players" hint="Current players playing in server |SERVERNAME|" :serverid="serverid">
         <template slot="titleRight">
-            <div class="col-md-6 col-sm-5 col-xs-12 form-group pull-right top_search">
+            <div class="col-md-9 col-sm-5 col-xs-12 form-group pull-right top_search">
                 <h3 v-text="refreshTimerText" style="display: block; margin: 0; text-align: right"></h3>
             </div>
         </template>

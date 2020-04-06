@@ -97,7 +97,6 @@
 			refreshServers() {
 				axios.get('/b3/list').then((response) => {
 					this.servers = response.data;
-					console.log(this.servers);
 				})
 			},
 			getServerUrl(server){
