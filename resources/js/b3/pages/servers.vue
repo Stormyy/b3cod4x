@@ -54,7 +54,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <router-link tag="tr" v-for="server in servers" :to="getServerUrl(server)" >
+                            <tr>
                                 <td>{{server.name}}
                                     <a :href="'cod4://'+server.host+':'+server.port" :title="`Join ${server.name} server`">
                                         <i class="fa fa-sign-in"></i>
@@ -63,7 +63,6 @@
                                 <td>
                                     <font color="red" v-if="server.slots === null">Offline</font>
                                     <font v-else-if="server.online === -1 && server.slots === -1" color="red">Something is wrong</font>
-
                                     <div v-else class="progress">
                                         <div class="progress-bar progress-bar-success progress-bar-striped active"
                                              role="progressbar" :aria-valuenow="server.online"
@@ -76,7 +75,7 @@
                                 <td style="text-align:right;">
                                     <router-link :to="getServerUrl(server)">View</router-link>
                                 </td>
-                            </router-link>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
